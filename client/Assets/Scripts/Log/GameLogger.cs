@@ -31,7 +31,7 @@ public class GameLogger : SingleTon<GameLogger>
         var dateStr = DateTime.Now.ToString().Replace("/", "_").Replace(":", "_").Replace(" ", "_");
         curLogPath = logDir + $"/Log_{dateStr}.txt";
         File.Create(curLogPath).Close();
-        Application.logMessageReceivedThreaded += Output;
+        // Application.logMessageReceivedThreaded += Output;
     }
 
     private void Output(string aCondition, string aStackTrace, LogType aType)

@@ -1,72 +1,123 @@
 ﻿using System;
-using System.Text;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using KCPNet;
 using GameProtocol;
 using Google.Protobuf;
+using PlasticGui.Configuration.CloudEdition.Welcome;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 // 这个网络模块只是随便写写，一个基于KCP的简易通信模块
 public class NetClient: SingleTon<NetClient>
 {
     public KCPClient kcpClient;
+    private Queue<byte[]> receiveQueue;
+    private CancellationTokenSource connectCheckCTS;
 
-    public Action<bool> onTryConnectToServerEnd;
+    public enum NetClientState
+    {
+        None,
+        Connecting,
+        Connected,
+        Disconnected,
+    }
+
+    public NetClientState state = NetClientState.None;
+    
+    public NetClient()
+    {
+        NetTicker ticker;
+        if((ticker = Object.FindObjectOfType<NetTicker>()) == null)
+        {
+            ticker = new GameObject().AddComponent<NetTicker>();
+            ticker.gameObject.name = "NetTicker";
+        }
+
+        receiveQueue = new Queue<byte[]>();
+
+        ticker.onUpdate = Update;
+        ticker.onApplicationQuit = () =>
+        {
+            connectCheckCTS?.Cancel();
+        };
+    }
+
+    private void Update()
+    {
+        lock (receiveQueue)
+        {
+            if (receiveQueue.Count > 0)
+            {
+                ProtocolDispatcher.Dispatch(receiveQueue.Dequeue());
+            }
+        }
+    }
 
     public void TryConnectToServer()
     {
+        kcpClient?.Close();
+
         kcpClient = new KCPClient();
         kcpClient.Start("127.0.0.1", 12000);
-
         kcpClient.onKCPReceive = OnKCPReceive;
 
+        state = NetClientState.Connecting;
+        
+        connectCheckCTS = new CancellationTokenSource();
         Task<bool> connectTask = kcpClient.TryConnectToServer();
         Task.Run(() =>
         {
             ConnectCheckAsync(connectTask);
-        });
+        }, connectCheckCTS.Token);
     }
     
-    public bool TryLogin()
+    public void RegisterProtocol(string protocalName, Action<object> callback)
     {
-        Debug.Log("尝试登录游戏");
-        LoginReq loginReq = new LoginReq();
-        byte[] loginReq_buffer = loginReq.ToByteArray();
-        
-        Protocol protocol = new Protocol();
-        protocol.Id = 1;
-        protocol.Data = ByteString.CopyFrom(loginReq_buffer);
-        var ret = kcpClient.SendMessage(protocol.ToByteArray());
-        return ret;
+        ProtocolDispatcher.RegisterProtocol(protocalName, callback);
+    }
+
+    public void SendMessage<T>(T msg) where T: IMessage<T>
+    {
+        var bytes = msg.ToByteArray();
+        Protocol p = new Protocol {Id = ProtocolDispatcher.name_id[typeof(T).Name], Data = ByteString.CopyFrom(bytes)};
+        Debug.Log($"发送消息: id = {p.Id}, len = {p.Data.Length}");
+        kcpClient.SendMessage(p.ToByteArray());
     }
 
     private void OnKCPReceive(byte[] bytesReceived)
     {
-        Protocol protocol = Protocol.Parser.ParseFrom(bytesReceived);
-        uint id = protocol.Id;
-        ProtocolHandler.id_parse[id](protocol.Data.ToByteArray(), null);
+        lock (receiveQueue)
+        {
+            receiveQueue.Enqueue(bytesReceived);
+        }
     }
 
     private async void ConnectCheckAsync(Task<bool> connectTask)
     {
         Debug.Log($"ConnectCheckAsync");
-
-        int failCount = 0;
+        int failCount = 1;
         while (true)
         {
-            Debug.Log($"尝试第 {failCount + 1} 次");
+            Debug.Log($"[{Thread.CurrentThread.ManagedThreadId}] 尝试第 {failCount} 次");
+            if (connectCheckCTS.IsCancellationRequested)
+            {
+                break;
+            }
+            
             if (connectTask != null && connectTask.IsCompleted)
             {
                 if (connectTask.Result)
                 {
-                    onTryConnectToServerEnd?.Invoke(true);
+                    state = NetClientState.Connected;
                     break;
                 }
 
-                failCount++;
+                Interlocked.Increment(ref failCount);
                 if (failCount > 5)
                 {
-                    onTryConnectToServerEnd?.Invoke(false);
+                    state = NetClientState.Disconnected;
                     break;
                 }
 

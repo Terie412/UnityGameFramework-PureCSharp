@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\program\\Github\\UnityGameFramework\\server\\GameServer\\GameServer\\GameServer.csproj",
+      "projectUniqueName": "D:\\program\\Github\\UnityGameFramework-PureCSharp\\server\\GameServer\\GameServer\\GameServer.csproj",
       "projectName": "GameServer",
-      "projectPath": "D:\\program\\Github\\UnityGameFramework\\server\\GameServer\\GameServer\\GameServer.csproj",
+      "projectPath": "D:\\program\\Github\\UnityGameFramework-PureCSharp\\server\\GameServer\\GameServer\\GameServer.csproj",
       "packagesPath": "C:\\Users\\qintianchen\\.nuget\\packages\\",
-      "outputPath": "D:\\program\\Github\\UnityGameFramework\\server\\GameServer\\GameServer\\obj\\",
+      "outputPath": "D:\\program\\Github\\UnityGameFramework-PureCSharp\\server\\GameServer\\GameServer\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

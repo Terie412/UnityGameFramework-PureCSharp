@@ -1,14 +1,13 @@
 using System.Collections;
 using GameProtocol;
 using KCPNet;
-using Newtonsoft.Json;
 using UnityEngine;
 
 public class GameMain : MonoBehaviour
 {
 	private IEnumerator Start()
 	{
-		Application.targetFrameRate = 30;
+		// Application.targetFrameRate = 30;
 		
 		// 日志系统初始化
 		GameLogger.Instance.Init();
@@ -16,52 +15,58 @@ public class GameMain : MonoBehaviour
 		// 资产管理器初始化
 		yield return AssetManager.Instance.Init();
 
-		{
-			// Lua 的逻辑演示
-			
-			// ToLua 初始化
-			// 执行主逻辑
-			// LuaMain.Instance.Init(this);
-			// LuaMain.Instance.lua.DoFile("Main");
-		}
-
 		// 网络
-		KCPNetLogger.onInfo = (str, color) =>
-		{
-			Debug.Log(str);
-		};
+		KCPNetLogger.onInfo = (str, _) => { Debug.Log(str); };
+		KCPNetLogger.onWarning = (str, _) => { Debug.LogWarning(str); };
+		KCPNetLogger.onError = (str, _) => { Debug.LogError(str); };
+
+		gameObject.GetOrAddComponent<NetTicker>();
 		
-		KCPNetLogger.onWarning = (str, color) =>
-		{
-			Debug.LogWarning(str);
-		};
-		
-		KCPNetLogger.onError = (str, color) =>
-		{
-			Debug.LogError(str);
-		};
-		
-		ProtocolHandler.RegisterProtocol("LoginAck", OnLoginAck);
-		NetClient.Instance.onTryConnectToServerEnd = OnTryConnectToServerEnd;
 		NetClient.Instance.TryConnectToServer();
-	}
 
-	private void OnTryConnectToServerEnd(bool isSuccess)
-	{
-		if (!isSuccess)
+		while (true)
 		{
-			Debug.Log("连接到服务器失败");
-			return;
-		}
+			if (NetClient.Instance.state == NetClient.NetClientState.Connected) break;
+			if (NetClient.Instance.state == NetClient.NetClientState.Disconnected)
+			{
+				GameLogger.Error("服务器连接失败");
+				yield break;
+			}
 
-		Debug.Log("连接到服务器成功！");
-		NetClient.Instance.TryLogin();
+			yield return null;
+		}
+		
+		// 主逻辑
+		NetClient.Instance.RegisterProtocol("LoginAck", OnLoginAck);
+		NetClient.Instance.RegisterProtocol("TestNetSpeedAck", OnTestNetSpeedAck);
+		Main();
 	}
 
-	// 现在依然是另一个线程在调用，所以希望网络的回包放在一个线程安全队列里面让主线程每帧去取
-	private void OnLoginAck(object obj, KCPSession session)
+	private void OnTestNetSpeedAck(object obj)
 	{
-		LoginAck loginAck = obj as LoginAck;
-		Debug.Log($"登录成功: {JsonConvert.SerializeObject(loginAck)}");
+		var ack = obj as TestNetSpeedAck;
+		var now = TimeUtils.GetTimeStampFromT0();
+		GameLogger.Info($"延迟:{now - ack.SendTimeStamp}, 服务器延迟: {ack.ReceiveTimeStamp - ack.SendTimeStamp}");
+	}
+
+	private void OnLoginAck(object obj)
+	{
+		StartCoroutine(test());
+	}
+
+	IEnumerator test()
+	{
+		for (int i = 0; i < 30; i++)
+		{
+			var msg = new TestNetSpeedReq();
+			msg.SendTimeStamp = TimeUtils.GetTimeStampFromT0(); 
+			NetClient.Instance.SendMessage(msg);
+			yield return new WaitForSeconds(0.03f);
+		}
+	}
+
+	private void Main()
+	{
+		LoginManager.Instance.StartLogin();
 	}
 }

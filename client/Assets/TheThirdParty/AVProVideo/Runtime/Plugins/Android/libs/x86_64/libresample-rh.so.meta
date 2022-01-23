@@ -27,7 +27,7 @@ PluginImporter:
     second:
       enabled: 1
       settings:
-        CPU: X86_64
+        CPU: x86_64
   - first:
       Any: 
     second:

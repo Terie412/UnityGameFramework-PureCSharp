@@ -18,7 +18,8 @@ namespace GameServer
             kcpServer.onClientSessionCreated = OnClientSessionCreate;
             kcpServer.onKCPReceive = OnKCPReceive;
             
-            ProtocolHandler.RegisterProtocol("LoginReq", OnLoginReq);
+            ProtocolHandler.onLoginReq = OnLoginReq;
+            ProtocolHandler.onTestNetSpeedReq = OnTestNetSpeedReq;
 
             Console.ReadKey();
         }
@@ -30,10 +31,15 @@ namespace GameServer
 
         private static void OnKCPReceive(byte[] bytesReceived, KCPSession session)
         {
-            Protocol protocol = Protocol.Parser.ParseFrom(bytesReceived);
-            uint id = protocol.Id;
-            KCPNetLogger.Info($"收到协议, id = {id}");
-            ProtocolHandler.id_parse[id](protocol.Data.ToByteArray(), session);
+            ProtocolDispatcher.Dispatch(bytesReceived, session);
+        }
+        
+        public static void SendMessage<T>(T msg, KCPSession session) where T: IMessage<T>
+        {
+            var bytes = msg.ToByteArray();
+            Protocol p = new Protocol {Id = ProtocolDispatcher.name_id[typeof(T).Name], Data = ByteString.CopyFrom(bytes)};
+            KCPNetLogger.Info($"发送消息: id = {p.Id}, len = {p.Data.Length}");
+            kcpServer.SendMessage(p.ToByteArray(), session.sid);
         }
 
         private static void OnLoginReq(object obj, KCPSession session)
@@ -44,14 +50,23 @@ namespace GameServer
             ack.PlayerInfo = new PlayInfo();
             ack.PlayerInfo.Name = "qintianchen";
             ack.PlayerInfo.Uid = 15614884;
-            var loginAckBytes = ack.ToByteArray();
-
-            Protocol protocol = new Protocol();
-            protocol.Id = 2;
-            protocol.Data = ByteString.CopyFrom(loginAckBytes);
-            var bytes = protocol.ToByteArray();
             
-            kcpServer.SendMessage(bytes, session.sid);
+            SendMessage(ack, session);
+        }
+        
+        public static long GetTimeStampFromT0()
+        {
+            return new DateTimeOffset(DateTime.UtcNow).ToUnixTimeMilliseconds();
+        }
+
+        private static void OnTestNetSpeedReq(object obj, KCPSession session)
+        {
+            var ack = obj as TestNetSpeedReq;
+            TestNetSpeedAck msg = new TestNetSpeedAck();
+            msg.SendTimeStamp = ack.SendTimeStamp;
+            msg.ReceiveTimeStamp = GetTimeStampFromT0();
+            
+            SendMessage(msg, session);
         }
     }
 }
