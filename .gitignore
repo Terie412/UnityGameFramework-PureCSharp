@@ -1,0 +1,11 @@
+client/Library
+client/UserSettings
+client/Logs
+client/Temp
+client/obj
+client/GameLogs
+*.sln
+.idea
+*.csproj
+*.user
+*.apk

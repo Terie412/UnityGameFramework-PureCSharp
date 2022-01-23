@@ -1,0 +1,36 @@
+{
+    "name": "TheThirtyParty.TrueSync.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:e3228cd79659b3544a80516dc2944f45"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [
+        "Android",
+        "CloudRendering",
+        "Editor",
+        "GameCoreScarlett",
+        "GameCoreXboxOne",
+        "iOS",
+        "LinuxStandalone64",
+        "Lumin",
+        "macOSStandalone",
+        "PS4",
+        "PS5",
+        "Stadia",
+        "Switch",
+        "tvOS",
+        "WSA",
+        "WebGL",
+        "WindowsStandalone32",
+        "WindowsStandalone64",
+        "XboxOne"
+    ],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,102 @@
+ManifestFileVersion: 0
+CRC: 3487951709
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 92d7f1cfc56a5ab84b709f79effe8e04
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 5ad585dd02dfb5016c0dad519eab8f49
+HashAppended: 0
+ClassTypes:
+- Class: 49
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Lua/ToLua/System/Injection/InjectionBridgeInfo.lua
+- Assets/Lua/ToLua/jit/bcsave.lua
+- Assets/Lua/ToLua/jit/p.lua
+- Assets/Lua/ToLua/jit/dis_mips.lua
+- Assets/Lua/ToLua/UnityEngine/LayerMask.lua
+- Assets/Lua/ToLua/UnityEngine/Vector2.lua
+- Assets/Lua/ToLua/protobuf/type_checkers.lua
+- Assets/Lua/ToLua/jit/zone.lua
+- Assets/Lua/ToLua/jit/dump.lua
+- Assets/Lua/ToLua/tolua.lua
+- Assets/Lua/ToLua/jit/dis_arm64.lua
+- Assets/Lua/ToLua/UnityEngine/Bounds.lua
+- Assets/Lua/ToLua/event.lua
+- Assets/Lua/ToLua/misc/functions.lua
+- Assets/Lua/UI/UIManager.lua
+- Assets/Lua/ToLua/protobuf/wire_format.lua
+- Assets/Lua/UI/UIBase.lua
+- Assets/Lua/Common/LuaStack.lua
+- Assets/Lua/ToLua/protobuf/containers.lua
+- Assets/Lua/Utils/TableUtil.lua
+- Assets/Lua/ToLua/lpeg/re.lua
+- Assets/Lua/ToLua/protobuf/decoder.lua
+- Assets/Lua/ToLua/UnityEngine/Plane.lua
+- Assets/Lua/ToLua/socket/headers.lua
+- Assets/Lua/ToLua/UnityEngine/Vector4.lua
+- Assets/Lua/ToLua/list.lua
+- Assets/Lua/UI/Login/LuaLoginSelectServerWindow.lua
+- Assets/Lua/ToLua/UnityEngine/Color.lua
+- Assets/Lua/ToLua/typeof.lua
+- Assets/Lua/ToLua/protobuf/protobuf.lua
+- Assets/Lua/ToLua/socket/smtp.lua
+- Assets/Lua/inspect.lua
+- Assets/Lua/ToLua/misc/strict.lua
+- Assets/Lua/ToLua/UnityEngine/Ray.lua
+- Assets/Lua/ToLua/misc/utf8.lua
+- Assets/Lua/ToLua/System/coroutine.lua
+- Assets/Lua/ToLua/protobuf/encoder.lua
+- Assets/Lua/ToLua/System/ValueType.lua
+- Assets/Lua/ToLua/jit/bc.lua
+- Assets/Lua/ToLua/ltn12.lua
+- Assets/Lua/ToLua/jit/dis_arm.lua
+- Assets/Lua/ToLua/System/Reflection/BindingFlags.lua
+- Assets/Lua/ToLua/jit/dis_x86.lua
+- Assets/Lua/Common/LuaObject.lua
+- Assets/Lua/ToLua/socket/mbox.lua
+- Assets/Lua/ToLua/socket/tp.lua
+- Assets/Lua/ToLua/jit/dis_mips64.lua
+- Assets/Lua/ToLua/socket/url.lua
+- Assets/Lua/ToLua/protobuf/listener.lua
+- Assets/Lua/ToLua/protobuf/text_format.lua
+- Assets/Lua/Definition/DefCommon.lua
+- Assets/Lua/ToLua/slot.lua
+- Assets/Lua/ToLua/jit/dis_mips64el.lua
+- Assets/Lua/ToLua/jit/v.lua
+- Assets/Lua/ToLua/UnityEngine/Mathf.lua
+- Assets/Lua/Utils/StringUtil.lua
+- Assets/Lua/ToLua/UnityEngine/RaycastHit.lua
+- Assets/Lua/ToLua/socket.lua
+- Assets/Lua/UI/UIWindow.lua
+- Assets/Lua/ToLua/jit/dis_mipsel.lua
+- Assets/Lua/ToLua/System/Timer.lua
+- Assets/Lua/UI/Login/LuaLoginWindow.lua
+- Assets/Lua/LuaEvent/LuaEvent.lua
+- Assets/Lua/ToLua/socket/ftp.lua
+- Assets/Lua/ToLua/UnityEngine/Profiler.lua
+- Assets/Lua/ToLua/cjson/util.lua
+- Assets/Lua/Utils/Utils.lua
+- Assets/Lua/Main.lua
+- Assets/Lua/ToLua/mime.lua
+- Assets/Lua/ToLua/System/Injection/LuaInjectionStation.lua
+- Assets/Lua/ToLua/UnityEngine/Touch.lua
+- Assets/Lua/ToLua/jit/dis_ppc.lua
+- Assets/Lua/Common/LuaQueue.lua
+- Assets/Lua/LuaEvent/LuaEventID.lua
+- Assets/Lua/Common/Log.lua
+- Assets/Lua/ToLua/UnityEngine/Quaternion.lua
+- Assets/Lua/ToLua/jit/dis_arm64be.lua
+- Assets/Lua/ToLua/UnityEngine/Time.lua
+- Assets/Lua/Utils/LoadUtil.lua
+- Assets/Lua/ToLua/System/Injection/LuaInjectionBus.lua
+- Assets/Lua/ToLua/jit/dis_x64.lua
+- Assets/Lua/ToLua/protobuf/descriptor.lua
+- Assets/Lua/ToLua/socket/http.lua
+- Assets/Lua/Scene/SceneManager.lua
+- Assets/Lua/ToLua/UnityEngine/Vector3.lua
+- Assets/Lua/emmy_core.bytes
+Dependencies: []

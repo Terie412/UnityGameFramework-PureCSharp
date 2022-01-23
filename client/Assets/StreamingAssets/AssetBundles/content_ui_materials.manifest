@@ -1,0 +1,17 @@
+ManifestFileVersion: 0
+CRC: 980319729
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 116e5ecb3f8ae4d0662280e5f5079f59
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 5ad585dd02dfb5016c0dad519eab8f49
+HashAppended: 0
+ClassTypes:
+- Class: 49
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Content/UI/Materials/placeholder.txt
+Dependencies: []

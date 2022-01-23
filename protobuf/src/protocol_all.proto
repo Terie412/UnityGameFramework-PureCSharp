@@ -1,0 +1,33 @@
+syntax = "proto3";
+package GameProtocol;
+
+message Protocol
+{
+	uint32 id = 1; 			// 协议ID
+	uint64 time_stamp = 2; 	// 发送协议时的时间戳，从1970-1-1开始的毫秒数
+	bytes data = 3;			// 协议内容
+}
+
+message LoginReq
+{
+	
+}
+
+message PlayInfo
+{
+	uint64 uid = 1;		// UID，玩家的唯一标识
+	string name = 2;	// 玩家的名字
+}
+
+message LoginAck
+{
+	uint32 sid = 1; // 通信的会话ID
+
+	PlayInfo player_info = 2; // 玩家信息
+}
+
+message HeartBeatReq
+{
+
+}
+

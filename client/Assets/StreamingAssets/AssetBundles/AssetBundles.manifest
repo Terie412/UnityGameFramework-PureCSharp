@@ -1,0 +1,40 @@
+ManifestFileVersion: 0
+CRC: 3499646342
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: content_environment_materials
+      Dependencies:
+        Dependency_0: content_environment_textures
+        Dependency_1: content_shaders
+    Info_1:
+      Name: content_environment_prefabs
+      Dependencies:
+        Dependency_0: content_environment_materials
+    Info_2:
+      Name: content_environment_textures
+      Dependencies: {}
+    Info_3:
+      Name: content_shaders
+      Dependencies: {}
+    Info_4:
+      Name: content_ui_animations
+      Dependencies: {}
+    Info_5:
+      Name: content_ui_materials
+      Dependencies: {}
+    Info_6:
+      Name: content_ui_prefabs
+      Dependencies: {}
+    Info_7:
+      Name: content_ui_prefabs_login
+      Dependencies: {}
+    Info_8:
+      Name: content_ui_sprites
+      Dependencies: {}
+    Info_9:
+      Name: content_ui_textures
+      Dependencies: {}
+    Info_10:
+      Name: lua
+      Dependencies: {}

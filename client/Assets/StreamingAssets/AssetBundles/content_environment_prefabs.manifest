@@ -1,0 +1,35 @@
+ManifestFileVersion: 0
+CRC: 426878602
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: d90b23378fa29da1253c9a04170a4f27
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 7dbd57f35b9173efb89df41710c21152
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 135
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Content/Environment/Prefabs/prefab_cube.prefab
+- Assets/Content/Environment/Prefabs/prefab_sphere.prefab
+Dependencies:
+- D:/program/Github/UnityGameFramework/Assets/StreamingAssets/AssetBundles/content_environment_materials
