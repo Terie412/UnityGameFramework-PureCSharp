@@ -1,55 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using GameProtocol;
-using KCPNet;
-using Newtonsoft.Json;
 using QTC.Modules.UI;
-using UnityEngine;
 
 public class GameMain : SingletonBehaviour<GameMain>
 {
-	private IEnumerator Start()
-	{
-		// Application.targetFrameRate = 30;
-		
-		// 日志系统初始化
-		GameLogger.Instance.Init();
-		
-		// 资产管理器初始化
-		yield return AssetManager.Instance.Init();
+    private async void Start()
+    {
+        // Application.targetFrameRate = 30;
 
-		// UI 管理器
-		UIManager.Instance.InitAsync();
-		// UIManager.Instance.Init();
-		
-		// // 网络系统的初始化
-		// KCPNetLogger.onInfo = (str, _) => { Debug.Log(str); };
-		// KCPNetLogger.onWarning = (str, _) => { Debug.LogWarning(str); };
-		// KCPNetLogger.onError = (str, _) => { Debug.LogError(str); };
-		// gameObject.GetOrAddComponent<NetTicker>();
-		//
-		// // 连接到服务器
-		// NetClient.Instance.TryConnectToServer();
-		// while (true)
-		// {
-		// 	if (NetClient.Instance.state == NetClient.NetClientState.Connected) break;
-		// 	if (NetClient.Instance.state == NetClient.NetClientState.Disconnected)
-		// 	{
-		// 		GameLogger.Error("服务器连接失败");
-		// 		yield break;
-		// 	}
-		//
-		// 	yield return null;
-		// }
-		//
-		//
-		// // 主逻辑
-		// Main();
-	}
+        GameLogger.Instance.Init();                                 // 日志系统初始化
+        await AssetManager.Instance.Init();                         // 资产管理器初始化
+        UIManager.Instance.InitAsync();                             // UI 管理器
+        gameObject.GetOrAddComponent<NetTicker>();                  // 网络系统的初始化
+        var ret = await NetClient.Instance.TryConnectToServer();    // 连接到服务器
+        if (!ret)
+        {
+            GameLogger.Error("连接服务器失败");
+            return;
+        }
 
-	private void Main()
-	{
-		LoginManager.Instance.StartLogin();
-	}
+        Main(); // 主逻辑
+    }
+
+    private void Main()
+    {
+        // 登录服务器
+        LoginManager.Instance.StartLogin();
+    }
 }

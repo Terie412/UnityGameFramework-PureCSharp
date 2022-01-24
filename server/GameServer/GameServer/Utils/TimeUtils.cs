@@ -2,8 +2,8 @@
 
 public static class TimeUtils
 {
-    public static long GetTimeStamp()
+    public static ulong GetTimeStamp()
     {
-        return new DateTimeOffset(DateTime.UtcNow).ToUnixTimeMilliseconds();
+        return (ulong) new DateTimeOffset(DateTime.UtcNow).ToUnixTimeMilliseconds();
     }
 }

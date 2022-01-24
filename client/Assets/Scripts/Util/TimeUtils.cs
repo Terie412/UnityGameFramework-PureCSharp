@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
+// 当前类所有的接口和字段都表示的是UTC时间，以服务器为标准，误差大致为登录协议的网络时延
 public static class TimeUtils
 {
     // 下面这两个时间戳的差，等于两台机器计时系统的相对误差 + 协议的下行延迟
@@ -19,5 +20,12 @@ public static class TimeUtils
         // 客户端不能使用 DateTime 来记录时间，原因是 DateTime 跟当前操作系统时间有关
         var now = Time.realtimeSinceStartupAsDouble;
         return LoginTimeServer + (ulong) ((now - LoginRealTimeSinceStartUp) * 1000);
+    }
+
+    // 毫秒时间戳 -> DateTime
+    public static DateTime MilliTimeStampToDateTime(ulong ts)
+    {
+        var offset = DateTimeOffset.FromUnixTimeMilliseconds((long) ts);
+        return offset.UtcDateTime;
     }
 }

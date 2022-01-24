@@ -27,6 +27,11 @@ public class NetClient: SingleTon<NetClient>
     
     public NetClient()
     {
+        // 转接网络库的日志系统到Unity的日志系统
+        KCPNetLogger.onInfo = (str, _) => { Debug.Log(str); };
+        KCPNetLogger.onWarning = (str, _) => { Debug.LogWarning(str); };
+        KCPNetLogger.onError = (str, _) => { Debug.LogError(str); };
+        
         NetTicker ticker;
         if((ticker = Object.FindObjectOfType<NetTicker>()) == null)
         {
@@ -54,7 +59,7 @@ public class NetClient: SingleTon<NetClient>
         }
     }
 
-    public void TryConnectToServer()
+    public async Task<bool> TryConnectToServer()
     {
         kcpClient?.Close();
 
@@ -65,11 +70,8 @@ public class NetClient: SingleTon<NetClient>
         state = NetClientState.Connecting;
         
         connectCheckCTS = new CancellationTokenSource();
-        Task<bool> connectTask = kcpClient.TryConnectToServer();
-        Task.Run(() =>
-        {
-            ConnectCheckAsync(connectTask);
-        }, connectCheckCTS.Token);
+        var result = await kcpClient.TryConnectToServer();
+        return result;
     }
     
     public void RegisterProtocol(string protocalName, Action<object> callback)
@@ -81,7 +83,6 @@ public class NetClient: SingleTon<NetClient>
     {
         var bytes = msg.ToByteArray();
         Protocol p = new Protocol {Id = ProtocolDispatcher.name_id[typeof(T).Name], Data = ByteString.CopyFrom(bytes)};
-        Debug.Log($"发送消息: id = {p.Id}, len = {p.Data.Length}");
         kcpClient.SendMessage(p.ToByteArray());
     }
 
@@ -90,40 +91,6 @@ public class NetClient: SingleTon<NetClient>
         lock (receiveQueue)
         {
             receiveQueue.Enqueue(bytesReceived);
-        }
-    }
-
-    private async void ConnectCheckAsync(Task<bool> connectTask)
-    {
-        Debug.Log($"ConnectCheckAsync");
-        int failCount = 1;
-        while (true)
-        {
-            Debug.Log($"[{Thread.CurrentThread.ManagedThreadId}] 尝试第 {failCount} 次");
-            if (connectCheckCTS.IsCancellationRequested)
-            {
-                break;
-            }
-            
-            if (connectTask != null && connectTask.IsCompleted)
-            {
-                if (connectTask.Result)
-                {
-                    state = NetClientState.Connected;
-                    break;
-                }
-
-                Interlocked.Increment(ref failCount);
-                if (failCount > 1)
-                {
-                    state = NetClientState.Disconnected;
-                    break;
-                }
-
-                connectTask = kcpClient.TryConnectToServer();
-            }
-                
-            await Task.Delay(1000);
         }
     }
 }

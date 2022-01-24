@@ -35,35 +35,15 @@ namespace QTC.Modules.UI
         public async void InitAsync()
         {
             GameLogger.Info("开始加载");
-            GameObject uiroot = await AssetManager.Instance.LoadAssetAsync(UIROOT_NAME, null) as GameObject;
+            GameObject uiroot = await AssetManager.Instance.LoadAssetAsync<GameObject>(UIROOT_NAME, null);
             GameLogger.Info($"成功加载: {uiroot.name}");
 
             GameLogger.Info("再次加载");
-            uiroot = await AssetManager.Instance.LoadAssetAsync(UIROOT_NAME, null) as GameObject;
+            uiroot = await AssetManager.Instance.LoadAssetAsync<GameObject>(UIROOT_NAME, null);
             GameLogger.Info($"再次成功加载: {uiroot.name}");
             GameObject.Instantiate(uiroot);
         }
-        
-        public void Init()
-        {
-            GameLogger.Info("开始加载");
-            AssetManager.Instance.LoadAssetAsync<GameObject>(UIROOT_NAME, null, o =>
-            {
-                GameLogger.Info($"成功加载: {o.name}");
-                
-                GameLogger.Info("再次加载");
-                AssetManager.Instance.LoadAssetAsync<GameObject>(UIROOT_NAME, null, o2 =>
-                {
-                    GameLogger.Info($"再次成功加载: {o2.name}");
-                    GameObject.Instantiate(o2);
-                });
-            });
-
-            
-        }
     }
-    
-    
 }
 
 

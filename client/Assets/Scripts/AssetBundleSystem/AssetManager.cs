@@ -86,10 +86,16 @@ public class AssetManager : SingleTon<AssetManager>
 
     #endregion
 
-    public IEnumerator Init()
+    public async Task Init()
     {
+        if (isInited)
+        {
+            GameLogger.Error($"Do not init AssetManager twice!");
+            return;
+        }
+        
         // 初始化一系列名字的映射关系，这个映射关系体现了当前工程的打包策略
-        yield return InitAssetNameMap();
+        await InitAssetNameMap();
         assetBundlesToLoad = new Queue<AssetBundleWrap>();
         assetBundleName_loadingAssetBundle = new Dictionary<string, AssetBundleWrap>();
         assetBundleName_loadedAssetBundle = new Dictionary<string, AssetBundleWrap>();
@@ -211,36 +217,14 @@ public class AssetManager : SingleTon<AssetManager>
         return null;
     }
 
-    public Task<Object> LoadAssetAsync(string assetName, Object objRef)
+    public Task<T> LoadAssetAsync<T>(string assetName, Object objRef) where T : Object
     {
-        var tcs = new TaskCompletionSource<Object>();
-        LoadAssetAsync<Object>(assetName, objRef, o =>
-        {
-            tcs.SetResult(o);
-        });
+        var tcs = new TaskCompletionSource<T>();
+        LoadAssetAsync<Object>(assetName, objRef, o => { tcs.SetResult(o as T); });
 
         return tcs.Task;
     }
-
-    public IEnumerator WaitForAssetLoaded<T>(string assetName, Object objRef) where T: Object
-    {
-        var isDone = false;
-        T obj = null;
-        LoadAssetAsync<T>(assetName, objRef, (o) =>
-        {
-            isDone = true;
-            obj = o;
-        });
-
-        while (true)
-        {
-            if (isDone) break;
-            yield return null;
-        }
-
-        yield return obj;
-    }
-
+    
     /// 卸载所有未被引用的AssetBundle，会绕过 Resident 列表
     public void UnloadAllUnusedAssetBundle()
     {
@@ -303,11 +287,24 @@ public class AssetManager : SingleTon<AssetManager>
         return JsonConvert.SerializeObject(infos, Formatting.Indented);
     }
 
+    public Task<DownloadHandler> UnityWebRequestGetAsync(string path)
+    {
+        var tcs = new TaskCompletionSource<DownloadHandler>();
+        var request = UnityWebRequest.Get(path);
+        var ret = request.SendWebRequest();
+        ret.completed += (o) =>
+        {
+            tcs.SetResult(request.downloadHandler);
+            request.Dispose();
+        };
+        return tcs.Task;
+    }
+    
     #endregion
 
     #region private
 
-    private IEnumerator InitAssetNameMap()
+    private async Task InitAssetNameMap()
     {
         assetName_assetFullName = new Dictionary<string, string>();
         assetName_assetBundleName = new Dictionary<string, string>();
@@ -316,48 +313,42 @@ public class AssetManager : SingleTon<AssetManager>
 #if UNITY_EDITOR
         if (assetModeInEditor == AssetMode.AssetBundle)
         {
-            yield return InitAssetNameMapInAssetBundleMode();
+            await InitAssetNameMapInAssetBundleModeAsync();
         }
         else
         {
             InitAssetNameMapInAssetDataBaseMode();
         }
 #else
-		yield return InitAssetNameMapInAssetBundleMode();
+		InitAssetNameMapInAssetBundleModeAsync();
 #endif
 
         Debug.Log($"assetName_assetFullName = {JsonConvert.SerializeObject(assetName_assetFullName, Formatting.Indented)}");
         Debug.Log($"assetName_assetBundleFullName = {JsonConvert.SerializeObject(assetName_assetBundleName, Formatting.Indented)}");
     }
 
-    private IEnumerator InitAssetNameMapInAssetBundleMode()
+    private async Task InitAssetNameMapInAssetBundleModeAsync()
     {
-        using var request = UnityWebRequest.Get(Path.Combine(ASSETBUNDLE_DIR, "fileName_dirName_assetBundleName.csv"));
-        yield return request.SendWebRequest();
-        if (request.result == UnityWebRequest.Result.Success)
+        GameLogger.Info("Start InitAssetNameMapInAssetBundleModeAsync");
+        var handler = await UnityWebRequestGetAsync(Path.Combine(ASSETBUNDLE_DIR, "fileName_dirName_assetBundleName.csv"));
+        GameLogger.Info("End InitAssetNameMapInAssetBundleModeAsync");
+        string text = handler.text;
+        var lines = text.Split('\n');
+        foreach (var line in lines)
         {
-            var text = request.downloadHandler.text;
-            var lines = text.Split('\n');
-            foreach (var line in lines)
-            {
-                var newLine = line.Trim();
-                var cells = newLine.Split(',');
-                if (cells.Length == 3 && !string.IsNullOrEmpty(cells[0]) && !string.IsNullOrEmpty(cells[1]) && !string.IsNullOrEmpty(cells[2]))
-                {
-                    var fileName = cells[0];
-                    var filePath = cells[1];
-                    var assetBundleName = cells[2];
-                    var assetName = Path.GetFileNameWithoutExtension(cells[0]);
-                    // var assetBundleName = AssetHelper.DirectoryPathToAssetBundleName(cells[1]);
-                    assetName_assetFullName[assetName] = Path.Combine(cells[1], cells[0]).Replace("\\", "/");
-                    assetName_assetBundleName[assetName] = assetBundleName;
-                    assetBundleName_assetBundleFullName[assetBundleName] = Path.Combine(ASSETBUNDLE_DIR, assetBundleName).Replace("\\", "/");
-                }
-            }
+            var newLine = line.Trim();
+            var cells = newLine.Split(',');
+            if (cells.Length != 3 || string.IsNullOrEmpty(cells[0]) || string.IsNullOrEmpty(cells[1]) || string.IsNullOrEmpty(cells[2])) continue;
+
+            var assetBundleName = cells[2];
+            var assetName = Path.GetFileNameWithoutExtension(cells[0]);
+            assetName_assetFullName[assetName] = Path.Combine(cells[1], cells[0]).Replace("\\", "/");
+            assetName_assetBundleName[assetName] = assetBundleName;
+            assetBundleName_assetBundleFullName[assetBundleName] = Path.Combine(ASSETBUNDLE_DIR, assetBundleName).Replace("\\", "/");
         }
 
         var dirs = ASSETBUNDLE_DIR.Split('/');
-        var manifestAssetBundleName = dirs[dirs.Length - 1];
+        var manifestAssetBundleName = dirs[^1];
         assetName_assetFullName["AssetBundleManifest"] = "AssetBundleManifest";
         assetName_assetBundleName["AssetBundleManifest"] = manifestAssetBundleName;
         assetBundleName_assetBundleFullName[manifestAssetBundleName] = Path.Combine(ASSETBUNDLE_DIR, manifestAssetBundleName).Replace("\\", "/");
@@ -518,7 +509,7 @@ public class AssetManager : SingleTon<AssetManager>
                 keys.Add(assetWrap.assetName);
             }
         }
-  
+
         foreach (var key in keys)
         {
             var assetWrap = assetName_loadingAsset[key];
@@ -543,6 +534,7 @@ public class AssetManager : SingleTon<AssetManager>
                 GameLogger.Error($"加载AssetBundle失败: {wrap.assetBundleFullName}");
                 return;
             }
+
             Debug.Log($"完成加载AB:{wrap.request.assetBundle.name}");
             wrap.onLoaded?.Invoke(wrap);
             assetBundleName_loadedAssetBundle[wrap.assetBundleName] = wrap;

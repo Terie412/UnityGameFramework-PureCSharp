@@ -16,6 +16,8 @@ class ServerMain
         kcpServer.onClientSessionCreated = OnClientSessionCreate;
         kcpServer.onKCPReceive = OnKCPReceive;
         
+        LoginManager.Instance.Init();
+        
         Console.ReadKey();
     }
 
@@ -23,6 +25,15 @@ class ServerMain
     {
         ProtocolDispatcher.RegisterProtocol(protocolName, callback);        
     }
+    
+    public static void SendMessage<T>(T msg, KCPSession session) where T : IMessage<T>
+    {
+        var bytes = msg.ToByteArray();
+        Protocol p = new Protocol {Id = ProtocolDispatcher.name_id[typeof(T).Name], Data = ByteString.CopyFrom(bytes)};
+        kcpServer.SendMessage(p.ToByteArray(), session.sid);
+    }
+
+    #region private
 
     private static void OnClientSessionCreate(KCPSession session)
     {
@@ -34,12 +45,5 @@ class ServerMain
         ProtocolDispatcher.Dispatch(bytesReceived, session);
     }
 
-    public static void SendMessage<T>(T msg, KCPSession session) where T : IMessage<T>
-    {
-        var bytes = msg.ToByteArray();
-        Protocol p = new Protocol {Id = ProtocolDispatcher.name_id[typeof(T).Name], Data = ByteString.CopyFrom(bytes)};
-        kcpServer.SendMessage(p.ToByteArray(), session.sid);
-    }
-    
-    
+    #endregion
 }
