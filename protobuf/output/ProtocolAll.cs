@@ -27,16 +27,16 @@ namespace GameProtocol {
             "ChJwcm90b2NvbF9hbGwucHJvdG8SDEdhbWVQcm90b2NvbCI4CghQcm90b2Nv",
             "bBIKCgJpZBgBIAEoDRISCgp0aW1lX3N0YW1wGAIgASgEEgwKBGRhdGEYAyAB",
             "KAwiCgoITG9naW5SZXEiJQoIUGxheUluZm8SCwoDdWlkGAEgASgEEgwKBG5h",
-            "bWUYAiABKAkiRAoITG9naW5BY2sSCwoDc2lkGAEgASgNEisKC3BsYXllcl9p",
-            "bmZvGAIgASgLMhYuR2FtZVByb3RvY29sLlBsYXlJbmZvIg4KDEhlYXJ0QmVh",
-            "dFJlcWIGcHJvdG8z"));
+            "bWUYAiABKAkiWAoITG9naW5BY2sSCwoDc2lkGAEgASgNEhIKCmxvZ2luX3Rp",
+            "bWUYAiABKAQSKwoLcGxheWVyX2luZm8YAyABKAsyFi5HYW1lUHJvdG9jb2wu",
+            "UGxheUluZm8iDgoMSGVhcnRCZWF0UmVxYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::GameProtocol.Protocol), global::GameProtocol.Protocol.Parser, new[]{ "Id", "TimeStamp", "Data" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GameProtocol.LoginReq), global::GameProtocol.LoginReq.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GameProtocol.PlayInfo), global::GameProtocol.PlayInfo.Parser, new[]{ "Uid", "Name" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::GameProtocol.LoginAck), global::GameProtocol.LoginAck.Parser, new[]{ "Sid", "PlayerInfo" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::GameProtocol.LoginAck), global::GameProtocol.LoginAck.Parser, new[]{ "Sid", "LoginTime", "PlayerInfo" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GameProtocol.HeartBeatReq), global::GameProtocol.HeartBeatReq.Parser, null, null, null, null, null)
           }));
     }
@@ -735,6 +735,7 @@ namespace GameProtocol {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public LoginAck(LoginAck other) : this() {
       sid_ = other.sid_;
+      loginTime_ = other.loginTime_;
       playerInfo_ = other.playerInfo_ != null ? other.playerInfo_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -760,8 +761,23 @@ namespace GameProtocol {
       }
     }
 
+    /// <summary>Field number for the "login_time" field.</summary>
+    public const int LoginTimeFieldNumber = 2;
+    private ulong loginTime_;
+    /// <summary>
+    /// 服务器收到登录请求协议的服务器时间
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ulong LoginTime {
+      get { return loginTime_; }
+      set {
+        loginTime_ = value;
+      }
+    }
+
     /// <summary>Field number for the "player_info" field.</summary>
-    public const int PlayerInfoFieldNumber = 2;
+    public const int PlayerInfoFieldNumber = 3;
     private global::GameProtocol.PlayInfo playerInfo_;
     /// <summary>
     /// 玩家信息
@@ -791,6 +807,7 @@ namespace GameProtocol {
         return true;
       }
       if (Sid != other.Sid) return false;
+      if (LoginTime != other.LoginTime) return false;
       if (!object.Equals(PlayerInfo, other.PlayerInfo)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -800,6 +817,7 @@ namespace GameProtocol {
     public override int GetHashCode() {
       int hash = 1;
       if (Sid != 0) hash ^= Sid.GetHashCode();
+      if (LoginTime != 0UL) hash ^= LoginTime.GetHashCode();
       if (playerInfo_ != null) hash ^= PlayerInfo.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -823,8 +841,12 @@ namespace GameProtocol {
         output.WriteRawTag(8);
         output.WriteUInt32(Sid);
       }
+      if (LoginTime != 0UL) {
+        output.WriteRawTag(16);
+        output.WriteUInt64(LoginTime);
+      }
       if (playerInfo_ != null) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(26);
         output.WriteMessage(PlayerInfo);
       }
       if (_unknownFields != null) {
@@ -841,8 +863,12 @@ namespace GameProtocol {
         output.WriteRawTag(8);
         output.WriteUInt32(Sid);
       }
+      if (LoginTime != 0UL) {
+        output.WriteRawTag(16);
+        output.WriteUInt64(LoginTime);
+      }
       if (playerInfo_ != null) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(26);
         output.WriteMessage(PlayerInfo);
       }
       if (_unknownFields != null) {
@@ -857,6 +883,9 @@ namespace GameProtocol {
       int size = 0;
       if (Sid != 0) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Sid);
+      }
+      if (LoginTime != 0UL) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(LoginTime);
       }
       if (playerInfo_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(PlayerInfo);
@@ -875,6 +904,9 @@ namespace GameProtocol {
       }
       if (other.Sid != 0) {
         Sid = other.Sid;
+      }
+      if (other.LoginTime != 0UL) {
+        LoginTime = other.LoginTime;
       }
       if (other.playerInfo_ != null) {
         if (playerInfo_ == null) {
@@ -901,7 +933,11 @@ namespace GameProtocol {
             Sid = input.ReadUInt32();
             break;
           }
-          case 18: {
+          case 16: {
+            LoginTime = input.ReadUInt64();
+            break;
+          }
+          case 26: {
             if (playerInfo_ == null) {
               PlayerInfo = new global::GameProtocol.PlayInfo();
             }
@@ -927,7 +963,11 @@ namespace GameProtocol {
             Sid = input.ReadUInt32();
             break;
           }
-          case 18: {
+          case 16: {
+            LoginTime = input.ReadUInt64();
+            break;
+          }
+          case 26: {
             if (playerInfo_ == null) {
               PlayerInfo = new global::GameProtocol.PlayInfo();
             }

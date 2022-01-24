@@ -20,5 +20,5 @@ Assets:
 - Assets/Content/Environment/Materials/mat_common_red.mat
 - Assets/Content/Environment/Materials/mat_common_green.mat
 Dependencies:
-- D:/program/Github/UnityGameFramework/Assets/StreamingAssets/AssetBundles/content_environment_textures
-- D:/program/Github/UnityGameFramework/Assets/StreamingAssets/AssetBundles/content_shaders
+- D:/program/Github/UnityGameFramework-PureCSharp/client/Assets/StreamingAssets/AssetBundles/content_environment_textures
+- D:/program/Github/UnityGameFramework-PureCSharp/client/Assets/StreamingAssets/AssetBundles/content_shaders

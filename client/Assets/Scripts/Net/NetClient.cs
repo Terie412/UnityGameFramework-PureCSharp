@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using KCPNet;
 using GameProtocol;
 using Google.Protobuf;
-using PlasticGui.Configuration.CloudEdition.Welcome;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -60,7 +59,7 @@ public class NetClient: SingleTon<NetClient>
         kcpClient?.Close();
 
         kcpClient = new KCPClient();
-        kcpClient.Start("127.0.0.1", 12000);
+        kcpClient.Start("10.90.239.80", 12000);
         kcpClient.onKCPReceive = OnKCPReceive;
 
         state = NetClientState.Connecting;
@@ -115,7 +114,7 @@ public class NetClient: SingleTon<NetClient>
                 }
 
                 Interlocked.Increment(ref failCount);
-                if (failCount > 5)
+                if (failCount > 1)
                 {
                     state = NetClientState.Disconnected;
                     break;

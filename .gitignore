@@ -4,6 +4,7 @@ client/Logs
 client/Temp
 client/obj
 client/GameLogs
+client/UGFW_BackUpThisFolder_ButDontShipItWithYourGame
 *.sln
 .idea
 *.csproj

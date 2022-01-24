@@ -82,15 +82,23 @@ public class GenerateProtocolCode
         }
 
         ret += "\t{\n";
-        ret += "\t\tProtocol p = Protocol.Parser.ParseFrom(bytes);\n";
+        ret += "\t\ttry\n";
+        ret += "\t\t{\n";
+        ret += "\t\t\tProtocol p = Protocol.Parser.ParseFrom(bytes);\n";
         if (isClient)
         {
-            ret += "\t\tid_parser[p.Id]?.Invoke(p.Data.ToByteArray());\n";
+            ret += "\t\t\tid_parser[p.Id]?.Invoke(p.Data.ToByteArray());\n";
         }
         else
         {
-            ret += "\t\tid_parser[p.Id]?.Invoke(p.Data.ToByteArray(), session);\n";
+            ret += "\t\t\tid_parser[p.Id]?.Invoke(p.Data.ToByteArray(), session);\n";
         }
+
+        ret += "\t\t}\n";
+        ret += "\t\tcatch(Exception e)\n";
+        ret += "\t\t{\n";
+        ret += "\t\t\tKCPNetLogger.Error(e.ToString());\n";
+        ret += "\t\t}\n";
 
         ret += "\t}\n";
 

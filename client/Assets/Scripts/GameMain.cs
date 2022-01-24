@@ -1,9 +1,13 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using GameProtocol;
 using KCPNet;
+using Newtonsoft.Json;
+using QTC.Modules.UI;
 using UnityEngine;
 
-public class GameMain : MonoBehaviour
+public class GameMain : SingletonBehaviour<GameMain>
 {
 	private IEnumerator Start()
 	{
@@ -15,54 +19,33 @@ public class GameMain : MonoBehaviour
 		// 资产管理器初始化
 		yield return AssetManager.Instance.Init();
 
-		// 网络
-		KCPNetLogger.onInfo = (str, _) => { Debug.Log(str); };
-		KCPNetLogger.onWarning = (str, _) => { Debug.LogWarning(str); };
-		KCPNetLogger.onError = (str, _) => { Debug.LogError(str); };
-
-		gameObject.GetOrAddComponent<NetTicker>();
+		// UI 管理器
+		UIManager.Instance.InitAsync();
+		// UIManager.Instance.Init();
 		
-		NetClient.Instance.TryConnectToServer();
-
-		while (true)
-		{
-			if (NetClient.Instance.state == NetClient.NetClientState.Connected) break;
-			if (NetClient.Instance.state == NetClient.NetClientState.Disconnected)
-			{
-				GameLogger.Error("服务器连接失败");
-				yield break;
-			}
-
-			yield return null;
-		}
-		
-		// 主逻辑
-		NetClient.Instance.RegisterProtocol("LoginAck", OnLoginAck);
-		NetClient.Instance.RegisterProtocol("TestNetSpeedAck", OnTestNetSpeedAck);
-		Main();
-	}
-
-	private void OnTestNetSpeedAck(object obj)
-	{
-		var ack = obj as TestNetSpeedAck;
-		var now = TimeUtils.GetTimeStampFromT0();
-		GameLogger.Info($"延迟:{now - ack.SendTimeStamp}, 服务器延迟: {ack.ReceiveTimeStamp - ack.SendTimeStamp}");
-	}
-
-	private void OnLoginAck(object obj)
-	{
-		StartCoroutine(test());
-	}
-
-	IEnumerator test()
-	{
-		for (int i = 0; i < 30; i++)
-		{
-			var msg = new TestNetSpeedReq();
-			msg.SendTimeStamp = TimeUtils.GetTimeStampFromT0(); 
-			NetClient.Instance.SendMessage(msg);
-			yield return new WaitForSeconds(0.03f);
-		}
+		// // 网络系统的初始化
+		// KCPNetLogger.onInfo = (str, _) => { Debug.Log(str); };
+		// KCPNetLogger.onWarning = (str, _) => { Debug.LogWarning(str); };
+		// KCPNetLogger.onError = (str, _) => { Debug.LogError(str); };
+		// gameObject.GetOrAddComponent<NetTicker>();
+		//
+		// // 连接到服务器
+		// NetClient.Instance.TryConnectToServer();
+		// while (true)
+		// {
+		// 	if (NetClient.Instance.state == NetClient.NetClientState.Connected) break;
+		// 	if (NetClient.Instance.state == NetClient.NetClientState.Disconnected)
+		// 	{
+		// 		GameLogger.Error("服务器连接失败");
+		// 		yield break;
+		// 	}
+		//
+		// 	yield return null;
+		// }
+		//
+		//
+		// // 主逻辑
+		// Main();
 	}
 
 	private void Main()

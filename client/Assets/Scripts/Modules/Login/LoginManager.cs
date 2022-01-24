@@ -1,4 +1,6 @@
 ﻿using GameProtocol;
+using Newtonsoft.Json;
+using UnityEngine;
 
 public class LoginManager: SingleTon<LoginManager>
 {
@@ -16,6 +18,8 @@ public class LoginManager: SingleTon<LoginManager>
     private void OnLoginAck(object msg)
     {
         var ack = msg as LoginAck;
-        GameLogger.Info($"登录成功 {ack.Sid}");
+        TimeUtils.LoginTimeServer = ack.LoginTime;
+        TimeUtils.LoginRealTimeSinceStartUp = Time.realtimeSinceStartup;
+        GameLogger.Info($"登录成功 {JsonConvert.SerializeObject(ack)}");
     }
 }

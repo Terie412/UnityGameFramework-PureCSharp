@@ -32,4 +32,4 @@ Assets:
 - Assets/Content/Environment/Prefabs/prefab_cube.prefab
 - Assets/Content/Environment/Prefabs/prefab_sphere.prefab
 Dependencies:
-- D:/program/Github/UnityGameFramework/Assets/StreamingAssets/AssetBundles/content_environment_materials
+- D:/program/Github/UnityGameFramework-PureCSharp/client/Assets/StreamingAssets/AssetBundles/content_environment_materials

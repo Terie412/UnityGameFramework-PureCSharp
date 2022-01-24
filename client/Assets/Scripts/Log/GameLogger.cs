@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Threading;
 using UnityEngine;
 
 
@@ -31,7 +32,7 @@ public class GameLogger : SingleTon<GameLogger>
         var dateStr = DateTime.Now.ToString().Replace("/", "_").Replace(":", "_").Replace(" ", "_");
         curLogPath = logDir + $"/Log_{dateStr}.txt";
         File.Create(curLogPath).Close();
-        // Application.logMessageReceivedThreaded += Output;
+        Application.logMessageReceived += Output;
     }
 
     private void Output(string aCondition, string aStackTrace, LogType aType)

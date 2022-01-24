@@ -39,7 +39,7 @@ public class UnityTimer
         this.isLooped = isLooped;
         this.useTimeScale = useTimeScale;
         this.mono = mono;
-
+        
         isCompleted = false;
         isPause = false;
         isCancelled = false;
@@ -48,6 +48,11 @@ public class UnityTimer
 
     public void Start()
     {
+        if (onUpdate == null && onComplete == null)
+        {
+            GameLogger.Warning("Starting a timer without registering onUpdate and onComplete callback is meaningless.");
+            return;
+        }
         TimerTicker.Instance.RegisterTimer(this);
         lastUpdateTime = GetTimeNow();
     }

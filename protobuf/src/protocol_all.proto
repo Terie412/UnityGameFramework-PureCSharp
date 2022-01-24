@@ -22,8 +22,8 @@ message PlayInfo
 message LoginAck
 {
 	uint32 sid = 1; // 通信的会话ID
-
-	PlayInfo player_info = 2; // 玩家信息
+	uint64 login_time = 2; // 服务器收到登录请求协议的服务器时间
+	PlayInfo player_info = 3; // 玩家信息
 }
 
 message HeartBeatReq

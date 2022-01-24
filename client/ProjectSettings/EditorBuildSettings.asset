@@ -6,16 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Content/Scenes/scene_test_truesync.unity
-    guid: e47edae8af6bb464eacd7c8595ab508c
-  - enabled: 1
     path: Assets/Content/Scenes/scene_test.unity
     guid: 4a1ad91b4f7667a478190048cde926f6
-  - enabled: 1
-    path: Assets/Content/Scenes/scene_test_assetmanager.unity
-    guid: e69b004342a93e2418a8ecf6334f29fb
-  - enabled: 1
-    path: Assets/Content/Scenes/scene_test_timer.unity
-    guid: 07ef54fc1162a0945a43e378c63a960e
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 108b1b79034380f4e90737850b9bfb6a, type: 2}

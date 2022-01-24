@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
@@ -26,19 +27,6 @@ public enum AssetMode
     AssetBundle,
     AssetDataBase
 }
-    
-public enum AssetType
-{
-    UnityObject,
-    GameObject,
-    Material,
-    Sprite,
-    Texture,
-    AnimationClip,
-    VideoClip,
-    Scene,
-    TextAsset,
-}
 
 // 基于AssetBundle的资产管理
 public class AssetManager : SingleTon<AssetManager>
@@ -54,7 +42,6 @@ public class AssetManager : SingleTon<AssetManager>
 
     public List<string> singleAssetDirs = new List<string> // 这里定义的目录下的所有文件，都会相应地单独打成一个包
     {
-        "Assets/Lua",
     };
 
     public List<string> residentAssetDirs = new List<string> // 定义哪些目录下的资产将会常驻内存，不会被卸载掉
@@ -162,52 +149,6 @@ public class AssetManager : SingleTon<AssetManager>
         return assetBundle.LoadAsset<T>(assetFullName);
     }
 
-    /// 这个是给Lua导出的接口，因为ToLua无法导出泛型方法
-    public void LoadAssetAsync(string assetName, AssetType assetType, Object objRef, Action<Object> onLoaded)
-    {
-        try
-        {
-            switch (assetType)
-            {
-                case AssetType.UnityObject:
-                    LoadAssetAsync<Object>(assetName, objRef, onLoaded);
-                    break;
-                case AssetType.GameObject:
-                    LoadAssetAsync<GameObject>(assetName, objRef, onLoaded);
-                    break;
-                case AssetType.Material:
-                    LoadAssetAsync<Material>(assetName, objRef, onLoaded);
-                    break;
-                case AssetType.Sprite:
-                    LoadAssetAsync<Sprite>(assetName, objRef, onLoaded);
-                    break;
-                case AssetType.Texture:
-                    LoadAssetAsync<Texture>(assetName, objRef, onLoaded);
-                    break;
-                case AssetType.AnimationClip:
-                    LoadAssetAsync<Texture>(assetName, objRef, onLoaded);
-                    break;
-                case AssetType.VideoClip:
-                    LoadAssetAsync<Texture>(assetName, objRef, onLoaded);
-                    break;
-                case AssetType.Scene:
-                    LoadAssetAsync<Texture>(assetName, objRef, onLoaded);
-                    break;
-                case AssetType.TextAsset:
-                    LoadAssetAsync<TextAsset>(assetName, objRef, onLoaded);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(assetType), assetType, null);
-            }
-        }
-        catch (Exception e)
-        {
-            GameLogger.Error(e.ToString());
-            throw;
-        }
-        
-    }
-
     public AssetWrap LoadAssetAsync<T>(string assetName, Object objRef, Action<T> onLoaded) where T : Object
     {
 #if UNITY_EDITOR
@@ -268,6 +209,36 @@ public class AssetManager : SingleTon<AssetManager>
         });
 
         return null;
+    }
+
+    public Task<Object> LoadAssetAsync(string assetName, Object objRef)
+    {
+        var tcs = new TaskCompletionSource<Object>();
+        LoadAssetAsync<Object>(assetName, objRef, o =>
+        {
+            tcs.SetResult(o);
+        });
+
+        return tcs.Task;
+    }
+
+    public IEnumerator WaitForAssetLoaded<T>(string assetName, Object objRef) where T: Object
+    {
+        var isDone = false;
+        T obj = null;
+        LoadAssetAsync<T>(assetName, objRef, (o) =>
+        {
+            isDone = true;
+            obj = o;
+        });
+
+        while (true)
+        {
+            if (isDone) break;
+            yield return null;
+        }
+
+        yield return obj;
     }
 
     /// 卸载所有未被引用的AssetBundle，会绕过 Resident 列表
@@ -533,8 +504,8 @@ public class AssetManager : SingleTon<AssetManager>
         {
             var wrap = assetBundleName_loadingAssetBundle[key];
             assetBundleName_loadedAssetBundle[wrap.assetBundleName] = wrap;
-            wrap.onLoaded?.Invoke(wrap);
             assetBundleName_loadingAssetBundle.Remove(key);
+            wrap.onLoaded?.Invoke(wrap);
         }
 
         keys.Clear();
@@ -547,12 +518,12 @@ public class AssetManager : SingleTon<AssetManager>
                 keys.Add(assetWrap.assetName);
             }
         }
-
+  
         foreach (var key in keys)
         {
             var assetWrap = assetName_loadingAsset[key];
-            assetWrap.onLoaded?.Invoke(assetWrap.request.asset);
             assetName_loadingAsset.Remove(key);
+            assetWrap.onLoaded?.Invoke(assetWrap.request.asset);
         }
 
         keys.Clear();

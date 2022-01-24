@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 3499646342
+CRC: 2194085729
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -34,7 +34,4 @@ AssetBundleManifest:
       Dependencies: {}
     Info_9:
       Name: content_ui_textures
-      Dependencies: {}
-    Info_10:
-      Name: lua
       Dependencies: {}

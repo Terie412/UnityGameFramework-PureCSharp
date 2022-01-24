@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 250149352
+CRC: 1909774510
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 3db1ecc58ccf8db8c5a585f56e1ad28c
+    Hash: 511047222f3842a93887476b4c8d9424
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 5b8c7093726df3afb3fe5d1e2f9dee25
+    Hash: ff76dfb98af0903d7f1807c4c2c23c77
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -18,11 +18,11 @@ ClassTypes:
 - Class: 48
   Script: {instanceID: 0}
 - Class: 114
-  Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 498fc6e6ca804714b8e84397f09e0f59, type: 3}
-- Class: 114
   Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: d199490a83bb2b844b9695cbf13b01ef, type: 3}
 - Class: 114
@@ -32,9 +32,9 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
-- Class: 114
   Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 498fc6e6ca804714b8e84397f09e0f59, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 128
@@ -46,8 +46,6 @@ ClassTypes:
 - Class: 224
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers:
-- AssemblyName: Core.Scripts
-  ClassName: LuaBindElement
 - AssemblyName: UnityEngine.CoreModule
   ClassName: UnityEngine.Events.PersistentCallGroup
 - AssemblyName: UnityEngine.CoreModule
