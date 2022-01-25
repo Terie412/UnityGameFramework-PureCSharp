@@ -556,7 +556,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3168439281933259109}
-  - component: {fileID: 3168439281933259110}
+  - component: {fileID: 6751996255364212953}
   m_Layer: 5
   m_Name: LoginWindow
   m_TagString: Untagged
@@ -588,7 +588,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &3168439281933259110
+--- !u!114 &6751996255364212953
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -597,31 +597,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3168439281933259108}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 498fc6e6ca804714b8e84397f09e0f59, type: 3}
+  m_Script: {fileID: 11500000, guid: 10f3b19c32894f8e8bb9669ff8c8ba89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LuaFileName: Login/LuaLoginWindow
-  elements:
-  - selectedIndex: 0
-    obj: {fileID: 3168439281627078690}
-    relativePath: btnConfirm
-    luaName: btnConfirm
-    isLuaNameCustom: 0
-  - selectedIndex: 0
-    obj: {fileID: 3168439280857115732}
-    relativePath: inputName
-    luaName: inputName
-    isLuaNameCustom: 0
-  - selectedIndex: 0
-    obj: {fileID: 3168439281263242030}
-    relativePath: btnChooseServer
-    luaName: btnChooseServer
-    isLuaNameCustom: 0
-  - selectedIndex: 0
-    obj: {fileID: 3168439281937255902}
-    relativePath: btnChooseServer/txtServer
-    luaName: txtServer
-    isLuaNameCustom: 0
+  sysType: 0
 --- !u!1 &3168439281937255902
 GameObject:
   m_ObjectHideFlags: 0

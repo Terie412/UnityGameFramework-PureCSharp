@@ -81,14 +81,14 @@ public class AssetManager : SingleTon<AssetManager>
 
     public int MAX_ASSETBUNDLE_LOAD_PER_FRAME = 32;
 
-    public bool isInited = false; // 指示资源管理器是否初始化过
+    public bool isInit = false; // 指示资源管理器是否初始化过
     public Action onInit;
 
     #endregion
 
     public async Task Init()
     {
-        if (isInited)
+        if (isInit)
         {
             GameLogger.Error($"Do not init AssetManager twice!");
             return;
@@ -101,7 +101,6 @@ public class AssetManager : SingleTon<AssetManager>
         assetBundleName_loadedAssetBundle = new Dictionary<string, AssetBundleWrap>();
         assetBundleName_assetBundleToRemove = new Dictionary<string, AssetBundleWrap>();
         assetName_loadingAsset = new Dictionary<string, AssetWrap>();
-        AssetTicker.Instance.onUpdate += Update;
 
 #if !UNITY_EDITOR
             var assetBundle = AssetBundle.LoadFromFile(assetBundleName_assetBundleFullName[assetName_assetBundleName["AssetBundleManifest"]]);
@@ -113,7 +112,7 @@ public class AssetManager : SingleTon<AssetManager>
             assetBundleManifest = assetBundle.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
         }
 #endif
-        isInited = true;
+        isInit = true;
         onInit?.Invoke();
     }
 
@@ -223,6 +222,26 @@ public class AssetManager : SingleTon<AssetManager>
         LoadAssetAsync<Object>(assetName, objRef, o => { tcs.SetResult(o as T); });
 
         return tcs.Task;
+    }
+    
+    /// 这个接口会返回一个内存中加载出来的GameObject，以及实例化出来的一个GameObject，其中 parent 作为父级也作为对应AssetBundle的引用依据
+    public void LoadAndInstantiateGameObjectAsync(string assetName, Transform parent, Action<GameObject[]> callback)
+    {
+        LoadAssetAsync<GameObject>(assetName, parent, go =>
+        {
+            var instance = Object.Instantiate(go, parent);
+            instance.name = go.name;
+            callback.Invoke(new[] {go, instance});
+        });
+    }
+
+    /// 这个接口会返回一个内存中加载出来的GameObject，以及实例化出来的一个GameObject，其中 parent 作为父级也作为对应AssetBundle的引用依据
+    public async Task<GameObject[]> LoadAndInstantiateGameObjectAsync(string assetName, Transform parent)
+    {
+        GameObject go = await LoadAssetAsync<GameObject>(assetName, parent);
+        var instance = Object.Instantiate(go, parent);
+        instance.name = go.name;
+        return new[] {go, instance};
     }
     
     /// 卸载所有未被引用的AssetBundle，会绕过 Resident 列表
@@ -468,7 +487,7 @@ public class AssetManager : SingleTon<AssetManager>
         return wrap;
     }
 
-    private void Update()
+    public void Update()
     {
         // 从预加载队列中取出指定数量的AssetBundle进行加载
         for (int i = 0; i < MAX_ASSETBUNDLE_LOAD_PER_FRAME; i++)

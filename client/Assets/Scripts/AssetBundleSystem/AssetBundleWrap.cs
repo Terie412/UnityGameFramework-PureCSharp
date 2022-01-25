@@ -6,8 +6,8 @@ using Object = UnityEngine.Object;
 
 public class AssetBundleWrap
 {
-    public string assetBundleName;
-    public string assetBundleFullName;
+    public readonly string assetBundleName;
+    public readonly string assetBundleFullName;
     public Action<AssetBundleWrap> onLoaded;
 
     public List<AssetBundleWrap> deps; // 依赖的AB列表，加载时，这个列表需要都被先加载完成

@@ -142,10 +142,10 @@ RectTransform:
   m_Father: {fileID: 7652986028376044906}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 185, y: -60}
-  m_SizeDelta: {x: 350, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7652986027458001112
 CanvasRenderer:
@@ -731,7 +731,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7652986028752062400}
-  - component: {fileID: 7652986028752062401}
+  - component: {fileID: 4417404666473829718}
   m_Layer: 5
   m_Name: LoginSelectServerWindow
   m_TagString: Untagged
@@ -761,7 +761,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &7652986028752062401
+--- !u!114 &4417404666473829718
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -770,18 +770,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7652986028752062407}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 498fc6e6ca804714b8e84397f09e0f59, type: 3}
+  m_Script: {fileID: 11500000, guid: 7a524b0c49ce4ee7924e90e7a13c823d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LuaFileName: Login/LuaLoginSelectServerWindow
-  elements:
-  - selectedIndex: 0
-    obj: {fileID: 7652986028376044905}
-    relativePath: midPart/scroll/view/content
-    luaName: content
-    isLuaNameCustom: 0
-  - selectedIndex: 0
-    obj: {fileID: 7652986028166716426}
-    relativePath: bg
-    luaName: bg
-    isLuaNameCustom: 0
+  sysType: 0

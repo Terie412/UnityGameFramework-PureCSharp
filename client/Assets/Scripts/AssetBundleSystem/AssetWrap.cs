@@ -14,8 +14,8 @@ public struct AssetBundleWrapInfo
 
 public class AssetWrap
 {
-    public string assetName;
-    public string assetFullName;
+    public readonly string assetName;
+    public readonly string assetFullName;
     public Action<Object> onLoaded;
     public AssetBundleRequest request;
 
