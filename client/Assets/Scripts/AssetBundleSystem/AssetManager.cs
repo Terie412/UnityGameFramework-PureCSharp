@@ -487,6 +487,7 @@ public class AssetManager : SingleTon<AssetManager>
         return wrap;
     }
 
+    // TODO: 这里的GC特别频繁，亟待优化
     public void Update()
     {
         // 从预加载队列中取出指定数量的AssetBundle进行加载
