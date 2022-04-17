@@ -11,6 +11,7 @@ namespace QTC.Modules.UI
     {
         public bool isInit = false;
         public GameObject uiRoot;
+        public Canvas LoadingEffectCanvas;
         public Canvas FullScreenEffectCanvas;
         public Canvas SystemUICanvas;
         public Canvas GuideUICanvas;
@@ -49,9 +50,10 @@ namespace QTC.Modules.UI
         
         public async Task InitAsync()
         {
-            uiRoot = (await AssetManager.Instance.LoadAndInstantiateGameObjectAsync(UIROOT_NAME, null))[1];
+            uiRoot = await AssetManager.Instance.LoadAndInstantiateGameObjectAsync(UIROOT_NAME, null);
             uiRoot.GetOrAddComponent<DontDestroyOnLoad>();
 
+            LoadingEffectCanvas = uiRoot.transform.Find("LoadingEffectCanvas").GetComponent<Canvas>();
             FullScreenEffectCanvas = uiRoot.transform.Find("FullScreenEffectCanvas").GetComponent<Canvas>();
             SystemUICanvas = uiRoot.transform.Find("SystemUICanvas").GetComponent<Canvas>();
             GuideUICanvas = uiRoot.transform.Find("GuideUICanvas").GetComponent<Canvas>();

@@ -235,13 +235,22 @@ public class AssetManager : SingleTon<AssetManager>
         });
     }
 
-    /// 这个接口会返回一个内存中加载出来的GameObject，以及实例化出来的一个GameObject，其中 parent 作为父级也作为对应AssetBundle的引用依据
-    public async Task<GameObject[]> LoadAndInstantiateGameObjectAsync(string assetName, Transform parent)
+    // 这个接口会返回一个内存中加载出来的GameObject，以及实例化出来的一个GameObject，其中 parent 作为父级也作为对应AssetBundle的引用依据
+    // public async Task<GameObject[]> LoadAndInstantiateGameObjectAsync(string assetName, Transform parent)
+    // {
+    //     GameObject go = await LoadAssetAsync<GameObject>(assetName, parent);
+    //     var instance = Object.Instantiate(go, parent);
+    //     instance.name = go.name;
+    //     return new[] {go, instance};
+    // }
+    
+    /// 这个接口会返回一个实例化出来的一个GameObject，其中 parent 作为父级也作为对应AssetBundle的引用依据
+    public async Task<GameObject> LoadAndInstantiateGameObjectAsync(string assetName, Transform parent)
     {
         GameObject go = await LoadAssetAsync<GameObject>(assetName, parent);
         var instance = Object.Instantiate(go, parent);
         instance.name = go.name;
-        return new[] {go, instance};
+        return instance;
     }
     
     /// 卸载所有未被引用的AssetBundle，会绕过 Resident 列表
