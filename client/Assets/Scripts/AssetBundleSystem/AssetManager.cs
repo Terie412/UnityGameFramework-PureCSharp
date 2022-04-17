@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -101,6 +100,7 @@ public class AssetManager : SingleTon<AssetManager>
         assetBundleName_loadedAssetBundle = new Dictionary<string, AssetBundleWrap>();
         assetBundleName_assetBundleToRemove = new Dictionary<string, AssetBundleWrap>();
         assetName_loadingAsset = new Dictionary<string, AssetWrap>();
+        keysToRemove = new List<string>();
 
 #if !UNITY_EDITOR
             var assetBundle = AssetBundle.LoadFromFile(assetBundleName_assetBundleFullName[assetName_assetBundleName["AssetBundleManifest"]]);
@@ -487,7 +487,7 @@ public class AssetManager : SingleTon<AssetManager>
         return wrap;
     }
 
-    // TODO: 这里的GC特别频繁，亟待优化
+    private List<string> keysToRemove;
     public void Update()
     {
         // 从预加载队列中取出指定数量的AssetBundle进行加载
@@ -501,17 +501,16 @@ public class AssetManager : SingleTon<AssetManager>
         }
 
         // 遍历正在加载的列表
-        List<string> keys = new List<string>();
         foreach (var keyValuePair in assetBundleName_loadingAssetBundle)
         {
             var wrap = keyValuePair.Value;
             if (wrap.isDone)
             {
-                keys.Add(keyValuePair.Key);
+                keysToRemove.Add(keyValuePair.Key);
             }
         }
 
-        foreach (var key in keys)
+        foreach (var key in keysToRemove)
         {
             var wrap = assetBundleName_loadingAssetBundle[key];
             assetBundleName_loadedAssetBundle[wrap.assetBundleName] = wrap;
@@ -519,25 +518,25 @@ public class AssetManager : SingleTon<AssetManager>
             wrap.onLoaded?.Invoke(wrap);
         }
 
-        keys.Clear();
+        keysToRemove.Clear();
 
         foreach (var keyValuePair in assetName_loadingAsset)
         {
             var assetWrap = keyValuePair.Value;
             if (assetWrap.isDone)
             {
-                keys.Add(assetWrap.assetName);
+                keysToRemove.Add(assetWrap.assetName);
             }
         }
 
-        foreach (var key in keys)
+        foreach (var key in keysToRemove)
         {
             var assetWrap = assetName_loadingAsset[key];
             assetName_loadingAsset.Remove(key);
             assetWrap.onLoaded?.Invoke(assetWrap.request.asset);
         }
 
-        keys.Clear();
+        keysToRemove.Clear();
     }
 
     private void StartLoadAssetBundleWrap(AssetBundleWrap wrap)
