@@ -4,9 +4,9 @@ using System.Collections.Generic;
 /// 为Timer提供一个Unity运行时生命周期的环境
 public class TimerTicker : SingletonBehaviour<TimerTicker>
 {
-    private List<UnityTimer> registeredTimer = new List<UnityTimer>(); // 注册中的定时器
-    private List<UnityTimer> timerToRegister = new List<UnityTimer>(); // 防止遍历当中修改
-    private List<UnityTimer> timerToRemove = new List<UnityTimer>(); // 因为异常情况要被移除的Timer
+    private List<UnityTimer> registeredTimer = new(); // 注册中的定时器
+    private List<UnityTimer> timerToRegister = new(); // 防止遍历当中修改
+    private List<UnityTimer> timerToRemove = new(); // 因为异常情况要被移除的Timer
 
     private void Update()
     {
