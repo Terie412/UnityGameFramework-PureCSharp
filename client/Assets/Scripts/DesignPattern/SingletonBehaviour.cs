@@ -16,11 +16,5 @@ public class SingletonBehaviour<T>: MonoBehaviour where T: SingletonBehaviour<T>
 		return instance;
 	});
 	
-	public static T Instance
-	{
-		get
-		{
-			return lazy.Value;
-		}
-	}
+	public static T Instance => lazy.Value;
 }

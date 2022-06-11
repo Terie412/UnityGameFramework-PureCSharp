@@ -39,13 +39,23 @@ public class TimerTicker : SingletonBehaviour<TimerTicker>
 
     public void RegisterTimer(UnityTimer unityTimer)
     {
+        timerToRemove.Remove(unityTimer); // 一个即将被 Remove 的Timer可能被即使 Restart 从而复活
+        timerToRegister.Add(unityTimer);
+
         // 如果时间 <= 0，Timer的回调会转成同步，当帧处理
         if (unityTimer.duration <= 0)
         {
             unityTimer.Update();
-            return;
+        }
+    }
+
+    public bool IsTimerRegistered(UnityTimer timer, bool includingToRegister = false)
+    {
+        if (timer == null)
+        {
+            return false;
         }
 
-        timerToRegister.Add(unityTimer);
+        return registeredTimer.Contains(timer) || (includingToRegister && timerToRegister.Contains(timer));
     }
 }
