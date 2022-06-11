@@ -41,7 +41,7 @@ public class GameLogger : SingleTon<GameLogger>
         {
             // 添加\t是方便某些能够以\t作为纯文本文件块折叠依据的文本编辑器查看日志
             var stackTraceSB = new StringBuilder(aStackTrace).Replace("\n", "\n\t");
-            var res = new StringBuilder().Append(DateTime.Now);
+            var res = new StringBuilder().Append(DateTime.Now).Append(" [").Append(Time.frameCount).Append("]");
 
             switch (aType)
             {
@@ -76,19 +76,16 @@ public class GameLogger : SingleTon<GameLogger>
 
     public static void Info(string msg)
     {
-        msg = "[" + Time.frameCount + "] " + msg;
         Debug.Log(msg);
     }
 
     public static void Warning(string msg)
     {
-        msg = "[" + Time.frameCount + "] " + msg;
         Debug.LogWarning(msg);
     }
 
     public static void Error(string msg)
     {
-        msg = "[" + Time.frameCount + "] " + msg;
         Debug.LogError(msg);
     }
 }
