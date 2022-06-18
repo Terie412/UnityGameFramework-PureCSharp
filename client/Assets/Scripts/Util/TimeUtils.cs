@@ -13,7 +13,7 @@ public static class TimeUtils
     public static ulong LoginTimeServer;    // 服务器收到当前客户端登录请求的服务器机器 UTC0 时间戳，单位 ms
     public static float LoginRealTimeSinceStartUp;    // 客户端收到登录回包时的客户端机器时间戳，单位 ms
 
-    /// 获取当前的时间戳，不同的客户端这个接口的差异取决于登录协议的网络延迟（主要）+ CPU 计时系统的误差（次要）
+    /// 获取当前的时间戳，不同的客户端这个接口的差异取决于登录协议的网络延迟（主要）+ 客户端和服务器两台设备计时系统的误差（次要）
     /// 因为我们无法获取协议的上行延迟/下行延迟，所以网络延迟部分带来的误差我们无法消除
     public static ulong GetTimeNow()
     {

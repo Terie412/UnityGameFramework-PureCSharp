@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 780360054
+CRC: 2920055842
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: cebe4d4f716175065c447f327014dad8
+    Hash: 73a611426c90ca6e949742a1b383cbb0
   TypeTreeHash:
     serializedVersion: 2
     Hash: 1848cfd019ebe6ef89967c6f90f2a3d4
@@ -13,6 +13,5 @@ ClassTypes:
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
-- Assets/Content/Shaders/shader_common_red.shader
-- Assets/Content/Shaders/shader_common_green.shader
+- Assets/Content/Shaders/shader_ui_frame_anim.shader
 Dependencies: []

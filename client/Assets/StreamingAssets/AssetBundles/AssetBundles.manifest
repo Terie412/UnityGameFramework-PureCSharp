@@ -1,16 +1,13 @@
 ManifestFileVersion: 0
-CRC: 17605858
+CRC: 3631496950
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
       Name: content_environment_materials
-      Dependencies:
-        Dependency_0: content_environment_textures
-        Dependency_1: content_shaders
+      Dependencies: {}
     Info_1:
       Name: content_environment_prefabs
-      Dependencies:
-        Dependency_0: content_environment_materials
+      Dependencies: {}
     Info_2:
       Name: content_environment_textures
       Dependencies: {}
@@ -22,7 +19,8 @@ AssetBundleManifest:
       Dependencies: {}
     Info_5:
       Name: content_ui_materials
-      Dependencies: {}
+      Dependencies:
+        Dependency_0: content_shaders
     Info_6:
       Name: content_ui_prefabs
       Dependencies: {}

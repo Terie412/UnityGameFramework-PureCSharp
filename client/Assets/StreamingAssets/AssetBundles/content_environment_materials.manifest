@@ -1,24 +1,22 @@
 ManifestFileVersion: 0
-CRC: 162561932
+CRC: 1365350365
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 1aba1f83ab21c1c7b0bedff4a769bae8
+    Hash: 72efaa213e742e81d89dbee8e797fbee
   TypeTreeHash:
     serializedVersion: 2
-    Hash: b93bd442b8167f85f0de1ddd2c5f516d
+    Hash: 8192622099dde349ba657e41be694cf1
 HashAppended: 0
 ClassTypes:
 - Class: 21
   Script: {instanceID: 0}
-- Class: 28
-  Script: {instanceID: 0}
 - Class: 48
+  Script: {instanceID: 0}
+- Class: 49
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
-- Assets/Content/Environment/Materials/mat_common_red.mat
-- Assets/Content/Environment/Materials/mat_common_green.mat
-Dependencies:
-- D:/program/Github/UnityGameFramework-PureCSharp/client/Assets/StreamingAssets/AssetBundles/content_environment_textures
-- D:/program/Github/UnityGameFramework-PureCSharp/client/Assets/StreamingAssets/AssetBundles/content_shaders
+- Assets/Content/Environment/Materials/placeholder.txt
+- Assets/Content/Environment/Materials/mat_comm_red.mat
+Dependencies: []

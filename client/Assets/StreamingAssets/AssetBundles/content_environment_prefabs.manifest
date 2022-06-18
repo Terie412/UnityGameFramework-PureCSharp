@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 426878602
+CRC: 1535720489
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: d90b23378fa29da1253c9a04170a4f27
+    Hash: f1d7785027694c2ce43a3dca292002b7
   TypeTreeHash:
     serializedVersion: 2
     Hash: 7dbd57f35b9173efb89df41710c21152
@@ -31,5 +31,4 @@ SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/Content/Environment/Prefabs/prefab_cube.prefab
 - Assets/Content/Environment/Prefabs/prefab_sphere.prefab
-Dependencies:
-- D:/program/Github/UnityGameFramework-PureCSharp/client/Assets/StreamingAssets/AssetBundles/content_environment_materials
+Dependencies: []

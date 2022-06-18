@@ -1,13 +1,12 @@
-mat_common_green.mat,Assets/Content/Environment/Materials,content_environment_materials
-mat_common_red.mat,Assets/Content/Environment/Materials,content_environment_materials
+mat_comm_red.mat,Assets/Content/Environment/Materials,content_environment_materials
+placeholder.txt,Assets/Content/UI/Textures,content_ui_textures
 prefab_cube.prefab,Assets/Content/Environment/Prefabs,content_environment_prefabs
 prefab_sphere.prefab,Assets/Content/Environment/Prefabs,content_environment_prefabs
 tex_env_color_quad.png,Assets/Content/Environment/Textures,content_environment_textures
 tex_env_grass.jpg,Assets/Content/Environment/Textures,content_environment_textures
 tex_env_grid.png,Assets/Content/Environment/Textures,content_environment_textures
-shader_common_green.shader,Assets/Content/Shaders,content_shaders
-shader_common_red.shader,Assets/Content/Shaders,content_shaders
-placeholder.txt,Assets/Content/UI/Textures,content_ui_textures
+shader_ui_frame_anim.shader,Assets/Content/Shaders,content_shaders
+mat_ui_frame_anim.mat,Assets/Content/UI/Materials,content_ui_materials
 UIRoot.prefab,Assets/Content/UI/Prefabs,content_ui_prefabs
 LoginSelectServerWindow.prefab,Assets/Content/UI/Prefabs/Login,content_ui_prefabs_login
 LoginWindow.prefab,Assets/Content/UI/Prefabs/Login,content_ui_prefabs_login

@@ -1,3 +1,4 @@
+using System;
 using QTC.Modules.UI;
 using UnityEngine;
 
@@ -7,11 +8,13 @@ public class GameMain : SingletonBehaviour<GameMain>
     
     private async void Start()
     {
-        Application.targetFrameRate = 60;
+        Application.targetFrameRate = 30;
 
         GameLogger.Instance.Init();                                 // 日志系统初始化
         await AssetManager.Instance.Init();                         // 资产管理器初始化
+        Debug.Log($"AssetManager Init Finish");
         await UIManager.Instance.InitAsync();                             // UI 管理器
+        Debug.Log($"UIManager Init Finish");
 
         if (isServerEnable)
         {
@@ -29,6 +32,8 @@ public class GameMain : SingletonBehaviour<GameMain>
 
     private void Update()
     {
+        Debug.Log("Update");
+        
         if(AssetManager.Instance.isInit)
             AssetManager.Instance.Update();
         
@@ -36,10 +41,14 @@ public class GameMain : SingletonBehaviour<GameMain>
             UIManager.Instance.Update();
     }
 
+    private void LateUpdate()
+    {
+        Debug.Log("LateUpdate");
+    }
+
     private void Main()
     {
         // 加载主UI
-        
         // UIManager.Instance.OpenWindow("LoginWindow", null);
 
         // 登录服务器

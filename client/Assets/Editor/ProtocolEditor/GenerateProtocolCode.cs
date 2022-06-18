@@ -13,8 +13,8 @@ public class GenerateProtocolCode
     public static string Server_ProtocolHandlerPath = "../server/GameServer/GameServer/ProtocolHandler.cs";
     public static string Server_ProtocolDispatcherPath = "../server/GameServer/GameServer/ProtocolDispatcher.cs";
 
-    [MenuItem("Tools/ReadProtobufFile")]
-    static void DoRead()
+    [MenuItem("Tools/GenerateProtocolHandler")]
+    static void Run()
     {
         IList<MessageDescriptor> messageTypes = ProtocolAllReflection.Descriptor.MessageTypes;
         List<string> msgNameList = new();

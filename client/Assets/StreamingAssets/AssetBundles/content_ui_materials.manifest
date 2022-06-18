@@ -1,17 +1,23 @@
 ManifestFileVersion: 0
-CRC: 980319729
+CRC: 4278796561
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 116e5ecb3f8ae4d0662280e5f5079f59
+    Hash: 0643b8f0420c5245f033f8787d2b8bf3
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 5ad585dd02dfb5016c0dad519eab8f49
+    Hash: 8192622099dde349ba657e41be694cf1
 HashAppended: 0
 ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
 - Class: 49
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
+- Assets/Content/UI/Materials/mat_ui_frame_anim.mat
 - Assets/Content/UI/Materials/placeholder.txt
-Dependencies: []
+Dependencies:
+- D:/program/Github/UnityGameFramework-PureCSharp/client/Assets/StreamingAssets/AssetBundles/content_shaders
