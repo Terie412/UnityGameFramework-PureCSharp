@@ -12,10 +12,9 @@ public class GameMain : SingletonBehaviour<GameMain>
 
         GameLogger.Instance.Init();                                 // 日志系统初始化
         await AssetManager.Instance.Init();                         // 资产管理器初始化
-        Debug.Log($"AssetManager Init Finish");
-        await UIManager.Instance.InitAsync();                             // UI 管理器
-        Debug.Log($"UIManager Init Finish");
-
+        await ScreenAdapterManager.Instance.Init();                 // 屏幕适配管理器
+        await UIManager.Instance.InitAsync();                       // UI 管理器
+        
         if (isServerEnable)
         {
             gameObject.GetOrAddComponent<NetTicker>();                  // 网络系统的初始化
@@ -32,18 +31,11 @@ public class GameMain : SingletonBehaviour<GameMain>
 
     private void Update()
     {
-        Debug.Log("Update");
-        
         if(AssetManager.Instance.isInit)
             AssetManager.Instance.Update();
         
         if(UIManager.Instance.isInit)
             UIManager.Instance.Update();
-    }
-
-    private void LateUpdate()
-    {
-        Debug.Log("LateUpdate");
     }
 
     private void Main()

@@ -59,7 +59,7 @@ public class AssetManager : SingleTon<AssetManager>
         }
     }
 
-    private AssetMode assetModeInEditor = AssetMode.AssetBundle; // 指示编辑器使用AssetBundleMode，否则默认走AssetDataBase机制
+    private AssetMode assetModeInEditor = AssetMode.AssetDataBase; // 指示编辑器使用AssetBundleMode，否则默认走AssetDataBase机制
 
     // 这里开始会建立一些名称的映射关系，其中，assetName是上层代码用来索引资源的标识符，因为我们规定了打进包的资源是不能重名的
     // assetFullName 用来从AssetBundle中加载资源
@@ -224,18 +224,19 @@ public class AssetManager : SingleTon<AssetManager>
         return tcs.Task;
     }
     
-    /// 这个接口会返回一个内存中加载出来的GameObject，以及实例化出来的一个GameObject，其中 parent 作为父级也作为对应AssetBundle的引用依据
+    /// 这个接口会返回一个内存中加载出来的GameObject，以及实例化出来的一个GameObject
+    /// parent 同时也是对应AssetBundle的引用，对于加载出来无父级的 GameObject，对应的 AssetBundle 可能会在下一次 UnloadAllUnusedAssetBundle() 调用的时候被清理
     public void LoadAndInstantiateGameObjectAsync(string assetName, Transform parent, Action<GameObject[]> callback)
     {
         LoadAssetAsync<GameObject>(assetName, parent, go =>
         {
             var instance = Object.Instantiate(go, parent);
             instance.name = go.name;
-            callback.Invoke(new[] {go, instance});
+            callback?.Invoke(new[] {go, instance});
         });
     }
 
-    /// 这个接口会返回一个实例化出来的一个GameObject，其中 parent 作为父级也作为对应AssetBundle的引用依据
+    /// 这个接口会返回一个实例化出来的一个GameObject
     public async Task<GameObject> LoadAndInstantiateGameObjectAsync(string assetName, Transform parent)
     {
         GameObject go = await LoadAssetAsync<GameObject>(assetName, parent);
@@ -244,14 +245,15 @@ public class AssetManager : SingleTon<AssetManager>
         return instance;
     }
     
-    /// 卸载所有未被引用的AssetBundle，会绕过 Resident 列表
-    public void UnloadAllUnusedAssetBundle()
+    /// 卸载所有未被引用的AssetBundle
+    public void UnloadAllUnusedAssetBundle(bool includeResidentAsset = false)
     {
-        List<string> keys = new List<string>();
+        List<string> keys = new();
         foreach (var keyValuePair in assetBundleName_loadedAssetBundle)
         {
             var wrap = keyValuePair.Value;
-            if (!assetBundleName_resident.ContainsKey(wrap.assetBundleName) && wrap.refCount == 0)
+            // 清理所有引用计数为0的资产（根据 includeResidentAsset 判定是否绕过 Resident 资产）
+            if ((includeResidentAsset || !assetBundleName_resident.ContainsKey(wrap.assetBundleName)) && wrap.refCount == 0)
             {
                 keys.Add(wrap.assetBundleName);
                 assetBundleName_assetBundleToRemove[wrap.assetBundleName] = wrap;
@@ -263,7 +265,7 @@ public class AssetManager : SingleTon<AssetManager>
             assetBundleName_loadedAssetBundle.Remove(key);
         }
 
-        // 总感觉以后要对ToRemoe做什么事情，现在就直接立即清空好了
+        // 总感觉以后要对 ToRemove 做什么事情，现在就直接立即清空好了
         foreach (var keyValuePair in assetBundleName_assetBundleToRemove)
         {
             keyValuePair.Value.UnLoad();
@@ -311,7 +313,7 @@ public class AssetManager : SingleTon<AssetManager>
         var tcs = new TaskCompletionSource<DownloadHandler>();
         var request = UnityWebRequest.Get(path);
         var ret = request.SendWebRequest();
-        ret.completed += (o) =>
+        ret.completed += _ =>
         {
             tcs.SetResult(request.downloadHandler);
             request.Dispose();
@@ -348,9 +350,7 @@ public class AssetManager : SingleTon<AssetManager>
 
     private async Task InitAssetNameMapInAssetBundleModeAsync()
     {
-        GameLogger.Info("Start InitAssetNameMapInAssetBundleModeAsync");
         var handler = await UnityWebRequestGetAsync(Path.Combine(ASSETBUNDLE_DIR, "fileName_dirName_assetBundleName.csv"));
-        GameLogger.Info("End InitAssetNameMapInAssetBundleModeAsync");
         string text = handler.text;
         var lines = text.Split('\n');
         foreach (var line in lines)
@@ -371,6 +371,7 @@ public class AssetManager : SingleTon<AssetManager>
         assetName_assetFullName["AssetBundleManifest"] = "AssetBundleManifest";
         assetName_assetBundleName["AssetBundleManifest"] = manifestAssetBundleName;
         assetBundleName_assetBundleFullName[manifestAssetBundleName] = Path.Combine(ASSETBUNDLE_DIR, manifestAssetBundleName).Replace("\\", "/");
+        handler.Dispose();
     }
 
     private void InitAssetNameMapInAssetDataBaseMode()

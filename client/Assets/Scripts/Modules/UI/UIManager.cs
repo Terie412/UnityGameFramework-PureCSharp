@@ -11,7 +11,10 @@ namespace QTC.Modules.UI
     {
         public bool isInit = false;
         public GameObject uiRoot;
-        public Canvas LoadingEffectCanvas;
+        
+        public Canvas ReferenceCanvas; // 该Canvas的模式为 ScreenSpace，大小用来指代当前屏幕分辨率（对于编辑器下，Screen.width/height 不能取到正确的分辨率）
+        
+        public Canvas LoadingEffectCanvas; // Loading
         public Canvas FullScreenEffectCanvas;
         public Canvas SystemUICanvas;
         public Canvas GuideUICanvas;
