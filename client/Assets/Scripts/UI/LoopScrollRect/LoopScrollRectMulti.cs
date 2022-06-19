@@ -9,15 +9,6 @@ namespace UnityEngine.UI
 {
     public abstract class LoopScrollRectMulti : LoopScrollRectBase
     {
-        [HideInInspector]
-        [NonSerialized]
-        public LoopScrollMultiDataSource dataSource = null;
-        
-        protected override void ProvideData(Transform transform, int index)
-        {
-            dataSource.ProvideData(transform, index);
-        }
-        
         // Multi Data Source cannot support TempPool
         protected override RectTransform GetFromTempPool(int itemIdx)
         {
@@ -25,7 +16,7 @@ namespace UnityEngine.UI
             nextItem.transform.SetParent(m_Content, false);
             nextItem.gameObject.SetActive(true);
 
-            ProvideData(nextItem, itemIdx);
+            onItemBuild.Invoke(nextItem.gameObject, itemIdx);
             return nextItem;
         }
 

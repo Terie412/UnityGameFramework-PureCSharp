@@ -1,9 +1,7 @@
-﻿using UnityEngine;
-using UnityEngine.Events;
+﻿using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 
 namespace UnityEngine.UI
 {
@@ -11,7 +9,6 @@ namespace UnityEngine.UI
     /// A component for making a child RectTransform scroll with reusable content.
     /// LoopScrollRect will not do any clipping on its own. Combined with a Mask component, it can be turned into a loop scroll view.
     /// </summary>
-    [AddComponentMenu("")]
     [DisallowMultipleComponent]
     [RequireComponent(typeof(RectTransform))]
     public abstract class LoopScrollRectBase : UIBehaviour, IInitializePotentialDragHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IScrollHandler, ICanvasElement, ILayoutElement, ILayoutGroup
@@ -253,11 +250,12 @@ namespace UnityEngine.UI
             AutoHideAndExpandViewport,
         }
 
-        [Serializable]
         /// <summary>
         /// Event type used by the ScrollRect.
         /// </summary>
+        [Serializable]
         public class ScrollRectEvent : UnityEvent<Vector2> {}
+        public class OnItemBuild : UnityEvent<GameObject, int> {}
 
         [SerializeField]
         protected RectTransform m_Content;	//==========LoopScrollRect==========
@@ -314,7 +312,10 @@ namespace UnityEngine.UI
         /// }
         /// </code>
         /// </example>
-        public bool horizontal { get { return m_Horizontal; } set { m_Horizontal = value; } }
+        public bool horizontal {
+            get => m_Horizontal;
+            set => m_Horizontal = value;
+        }
 
         [SerializeField]
         private bool m_Vertical = true;
@@ -343,7 +344,11 @@ namespace UnityEngine.UI
         /// }
         /// </code>
         /// </example>
-        public bool vertical { get { return m_Vertical; } set { m_Vertical = value; } }
+        public bool vertical
+        {
+            get => m_Vertical;
+            set => m_Vertical = value;
+        }
 
         [SerializeField]
         private MovementType m_MovementType = MovementType.Elastic;
@@ -351,7 +356,7 @@ namespace UnityEngine.UI
         /// <summary>
         /// The behavior to use when the content moves beyond the scroll rect.
         /// </summary>
-        public MovementType movementType { get { return m_MovementType; } set { m_MovementType = value; } }
+        public MovementType movementType => m_MovementType;
 
         [SerializeField]
         private float m_Elasticity = 0.1f;
@@ -378,7 +383,7 @@ namespace UnityEngine.UI
         /// }
         /// </code>
         /// </example>
-        public float elasticity { get { return m_Elasticity; } set { m_Elasticity = value; } }
+        public float elasticity => m_Elasticity;
 
         [SerializeField]
         private bool m_Inertia = true;
@@ -389,7 +394,7 @@ namespace UnityEngine.UI
         /// <remarks>
         /// Inertia means that the scrollrect content will keep scrolling for a while after being dragged. It gradually slows down according to the decelerationRate.
         /// </remarks>
-        public bool inertia { get { return m_Inertia; } set { m_Inertia = value; } }
+        public bool inertia => m_Inertia;
 
         [SerializeField]
         private float m_DecelerationRate = 0.135f; // Only used when inertia is enabled
@@ -419,7 +424,7 @@ namespace UnityEngine.UI
         /// }
         /// </code>
         /// </example>
-        public float decelerationRate { get { return m_DecelerationRate; } set { m_DecelerationRate = value; } }
+        public float decelerationRate => m_DecelerationRate;
 
         [SerializeField]
         private float m_ScrollSensitivity = 1.0f;
@@ -430,7 +435,7 @@ namespace UnityEngine.UI
         /// <remarks>
         /// Higher values indicate higher sensitivity.
         /// </remarks>
-        public float scrollSensitivity { get { return m_ScrollSensitivity; } set { m_ScrollSensitivity = value; } }
+        public float scrollSensitivity => m_ScrollSensitivity;
 
         [SerializeField]
         private RectTransform m_Viewport;
@@ -438,7 +443,7 @@ namespace UnityEngine.UI
         /// <summary>
         /// Reference to the viewport RectTransform that is the parent of the content RectTransform.
         /// </summary>
-        public RectTransform viewport { get { return m_Viewport; } set { m_Viewport = value; SetDirtyCaching(); } }
+        public RectTransform viewport { set { m_Viewport = value; SetDirtyCaching(); } }
 
         [SerializeField]
         private Scrollbar m_HorizontalScrollbar;
@@ -530,7 +535,7 @@ namespace UnityEngine.UI
         /// <summary>
         /// The mode of visibility for the horizontal scrollbar.
         /// </summary>
-        public ScrollbarVisibility horizontalScrollbarVisibility { get { return m_HorizontalScrollbarVisibility; } set { m_HorizontalScrollbarVisibility = value; SetDirtyCaching(); } }
+        public ScrollbarVisibility horizontalScrollbarVisibility { get => m_HorizontalScrollbarVisibility; set { m_HorizontalScrollbarVisibility = value; SetDirtyCaching(); } }
 
         [SerializeField]
         private ScrollbarVisibility m_VerticalScrollbarVisibility;
@@ -538,7 +543,7 @@ namespace UnityEngine.UI
         /// <summary>
         /// The mode of visibility for the vertical scrollbar.
         /// </summary>
-        public ScrollbarVisibility verticalScrollbarVisibility { get { return m_VerticalScrollbarVisibility; } set { m_VerticalScrollbarVisibility = value; SetDirtyCaching(); } }
+        public ScrollbarVisibility verticalScrollbarVisibility { get => m_VerticalScrollbarVisibility; set { m_VerticalScrollbarVisibility = value; SetDirtyCaching(); } }
 
         [SerializeField]
         private float m_HorizontalScrollbarSpacing;
@@ -546,7 +551,7 @@ namespace UnityEngine.UI
         /// <summary>
         /// The space between the scrollbar and the viewport.
         /// </summary>
-        public float horizontalScrollbarSpacing { get { return m_HorizontalScrollbarSpacing; } set { m_HorizontalScrollbarSpacing = value; SetDirty(); } }
+        public float horizontalScrollbarSpacing { get => m_HorizontalScrollbarSpacing; set { m_HorizontalScrollbarSpacing = value; SetDirty(); } }
 
         [SerializeField]
         private float m_VerticalScrollbarSpacing;
@@ -554,7 +559,7 @@ namespace UnityEngine.UI
         /// <summary>
         /// The space between the scrollbar and the viewport.
         /// </summary>
-        public float verticalScrollbarSpacing { get { return m_VerticalScrollbarSpacing; } set { m_VerticalScrollbarSpacing = value; SetDirty(); } }
+        public float verticalScrollbarSpacing { get => m_VerticalScrollbarSpacing; set { m_VerticalScrollbarSpacing = value; SetDirty(); } }
 
         [SerializeField]
         private ScrollRectEvent m_OnValueChanged = new ScrollRectEvent();
@@ -597,8 +602,11 @@ namespace UnityEngine.UI
         /// }
         /// </code>
         /// </example>
-        public ScrollRectEvent onValueChanged { get { return m_OnValueChanged; } set { m_OnValueChanged = value; } }
+        public ScrollRectEvent onValueChanged => m_OnValueChanged;
 
+        [SerializeField] private OnItemBuild m_OnItemBuild = new OnItemBuild();
+        public OnItemBuild onItemBuild => m_OnItemBuild;
+        
         // The offset from handle position to mouse down position
         private Vector2 m_PointerStartLocalCursor = Vector2.zero;
         protected Vector2 m_ContentStartPosition = Vector2.zero;
@@ -664,9 +672,9 @@ namespace UnityEngine.UI
         {}
 
         //==========LoopScrollRect==========
-        #if UNITY_EDITOR
         protected override void Awake()
         {
+#if UNITY_EDITOR
             base.Awake();
             if (Application.isPlaying)
             {
@@ -682,8 +690,8 @@ namespace UnityEngine.UI
                 else
                     Debug.Assert(!m_Vertical && m_Horizontal, this);
             }
+#endif
         }
-        #endif
 
         public void ClearCells()
         {
@@ -873,7 +881,7 @@ namespace UnityEngine.UI
             UpdatePrevData();
         }
 
-        protected abstract void ProvideData(Transform transform, int index);
+        // protected abstract void ProvideData(Transform transform, int index);
 
         /// <summary>
         /// Refresh item data
@@ -888,7 +896,8 @@ namespace UnityEngine.UI
                 {
                     if (itemTypeEnd < totalCount)
                     {
-                        ProvideData(m_Content.GetChild(i), itemTypeEnd);
+                        // ProvideData(m_Content.GetChild(i), itemTypeEnd);
+                        m_OnItemBuild.Invoke(m_Content.GetChild(i).gameObject, itemTypeEnd);
                         itemTypeEnd++;
                     }
                     else
