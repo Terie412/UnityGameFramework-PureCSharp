@@ -14,6 +14,10 @@ namespace UnityEngine.UI
             {
                 size += m_GridLayout.cellSize.x;
             }
+            else if(!item.TryGetComponent(typeof(LayoutElement), out _))
+            {
+                size += item.rect.width;
+            }
             else
             {
                 size += LayoutUtility.GetPreferredWidth(item);

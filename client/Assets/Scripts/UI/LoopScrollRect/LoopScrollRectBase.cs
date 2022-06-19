@@ -7,15 +7,13 @@ using System.Collections.Generic;
 
 namespace UnityEngine.UI
 {
+    /// <summary>
+    /// A component for making a child RectTransform scroll with reusable content.
+    /// LoopScrollRect will not do any clipping on its own. Combined with a Mask component, it can be turned into a loop scroll view.
+    /// </summary>
     [AddComponentMenu("")]
     [DisallowMultipleComponent]
     [RequireComponent(typeof(RectTransform))]
-    /// <summary>
-    /// A component for making a child RectTransform scroll with reuseable content.
-    /// </summary>
-    /// <remarks>
-    /// LoopScrollRect will not do any clipping on its own. Combined with a Mask component, it can be turned into a loop scroll view.
-    /// </remarks>
     public abstract class LoopScrollRectBase : UIBehaviour, IInitializePotentialDragHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IScrollHandler, ICanvasElement, ILayoutElement, ILayoutGroup
     {
         //==========LoopScrollRect==========
