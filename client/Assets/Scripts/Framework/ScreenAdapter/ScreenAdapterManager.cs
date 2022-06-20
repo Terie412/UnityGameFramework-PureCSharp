@@ -9,6 +9,7 @@ namespace Framework.ScreenAdapter
         public ScreenSize screenSize; // 屏幕分辨率
         public float aspectRatio => (float) screenSize.width / screenSize.height; // 屏幕分辨率比值
         private const float maxSafeAreaInsetWidthInPixel = 100; // 最大的安全区侧边宽度大小，像素单位
+        public readonly float referenceAspectRatio = 2.0f; // 参考的宽高比。想开发相机效果的时候，屏幕分辨率的比例应当是这个比例，而在实际的运行时，相机的FOV会参考该分辨率进行调整
 
         private float safeAreaInsetWidthNormalized // 归一化的安全区侧边宽度，为安全区侧边的实际宽度:屏幕宽度
         {
@@ -63,7 +64,7 @@ namespace Framework.ScreenAdapter
 
             ReferenceCanvasRT = go.GetComponent<RectTransform>();
             UpdateScreenSize();
-
+            
 #if UNITY_EDITOR
             await IPhoneSimulator.Instance.Init(GetCurrentScreenSize());
 #elif UNITY_ANDROID

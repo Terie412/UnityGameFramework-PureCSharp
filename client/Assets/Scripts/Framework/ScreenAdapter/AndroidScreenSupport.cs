@@ -2,7 +2,7 @@
 
 namespace Framework.ScreenAdapter
 {
-    public class AndroidScreenSupport : SingleTon<AndroidScreenSupport>
+    internal class AndroidScreenSupport : SingleTon<AndroidScreenSupport>
     {
         public enum AndroidPhoneType
         {
