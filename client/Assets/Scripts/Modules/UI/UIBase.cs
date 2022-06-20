@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace QTC.Modules.UI
+namespace Modules.UI
 {
     public class UIBase: MonoBehaviour
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using QTC.Modules.UI;
+using Modules.UI;
 using UnityEngine;
 
 public class SceneManager : SingleTon<SceneManager>

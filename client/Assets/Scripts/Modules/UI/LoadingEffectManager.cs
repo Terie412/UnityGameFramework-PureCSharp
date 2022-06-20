@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
-using QTC.Modules.UI;
+using Modules.UI;
 using UnityEngine;
 
-namespace QTC.Modules.UI
+namespace Modules.UI
 {
     public class LoadingEffectManager: SingleTon<LoadingEffectManager>
     {

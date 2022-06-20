@@ -1,5 +1,7 @@
 using System;
-using QTC.Modules.UI;
+using Framework.ScreenAdapter;
+using Modules.Login;
+using Modules.UI;
 using UnityEngine;
 
 public class GameMain : SingletonBehaviour<GameMain>
@@ -12,7 +14,7 @@ public class GameMain : SingletonBehaviour<GameMain>
 
         GameLogger.Instance.Init();                                 // 日志系统初始化
         await AssetManager.Instance.Init();                         // 资产管理器初始化
-        await ScreenAdapterManager.Instance.Init();                 // 屏幕适配管理器
+        await ScreenAdapterManager.Instance.Init();                 // UI 屏幕适配管理器
         await UIManager.Instance.InitAsync();                       // UI 管理器
         
         if (isServerEnable)

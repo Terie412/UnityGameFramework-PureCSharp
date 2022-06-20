@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
-namespace QTC.Modules.UI
+namespace Modules.UI
 {
     public class UIManager : SingleTon<UIManager>
     {

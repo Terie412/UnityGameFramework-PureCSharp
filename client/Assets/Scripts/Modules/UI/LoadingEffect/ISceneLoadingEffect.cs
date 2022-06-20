@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace QTC.Modules.UI
+namespace Modules.UI
 {
     public interface ISceneLoadingEffect
     {

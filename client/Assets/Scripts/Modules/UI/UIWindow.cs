@@ -1,4 +1,4 @@
-﻿namespace QTC.Modules.UI
+﻿namespace Modules.UI
 {
     public class UIWindow : UIBase
     {
