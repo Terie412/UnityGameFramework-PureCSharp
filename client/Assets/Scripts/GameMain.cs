@@ -1,17 +1,23 @@
-using System;
 using Framework.ScreenAdapter;
-using Modules.Login;
 using Modules.UI;
 using UnityEngine;
 
 public class GameMain : SingletonBehaviour<GameMain>
 {
-    public bool isServerEnable = false;
+    public bool isServerEnable;
+    [SerializeField] private int m_FrameRate = 30;
+    public int frameRate
+    {
+        set {
+            m_FrameRate = value;
+            Application.targetFrameRate = m_FrameRate;
+        }
+    }
     
     private async void Start()
     {
-        Application.targetFrameRate = 30;
-
+        frameRate = 30;
+        
         GameLogger.Instance.Init();                                 // 日志系统初始化
         await AssetManager.Instance.Init();                         // 资产管理器初始化
         await ScreenAdapterManager.Instance.Init();                 // UI 屏幕适配管理器
@@ -43,7 +49,7 @@ public class GameMain : SingletonBehaviour<GameMain>
     private void Main()
     {
         // 加载主UI
-        // UIManager.Instance.OpenWindow("LoginWindow", null);
+        UIManager.Instance.OpenWindow("LoginWindow", null);
 
         // 登录服务器
         // LoginManager.Instance.StartLogin();

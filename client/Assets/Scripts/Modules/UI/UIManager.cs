@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Framework.ScreenAdapter;
 using UnityEngine;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
@@ -88,7 +89,7 @@ namespace Modules.UI
             }
 
             GameLogger.Info($"Try to open window: {wndName}");
-            var request = new LoadRequest() {state = E_LOAD_STATE.loading, parent = parent, args = args};
+            var request = new LoadRequest {state = E_LOAD_STATE.loading, parent = parent, args = args};
             AssetManager.Instance.LoadAndInstantiateGameObjectAsync(wndName, MainUICanvas.transform, gos =>
             {
                 var go = gos[1];
@@ -116,6 +117,7 @@ namespace Modules.UI
 
                 request.state = E_LOAD_STATE.loaded;
                 request.target = uiWindow;
+                go.AddComponent<SafeAreaRectTransform>(); // 窗口需要保持在安全区以内
                 go.SetActive(false);
             });
             
