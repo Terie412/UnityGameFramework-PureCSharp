@@ -20,7 +20,7 @@ public class GameMain : SingletonBehaviour<GameMain>
         
         GameLogger.Instance.Init();                                 // 日志系统初始化
         await AssetManager.Instance.Init();                         // 资产管理器初始化
-        await ScreenAdapterManager.Instance.Init();                 // UI 屏幕适配管理器
+        ScreenAdapterManager.Instance.Init();
         await UIManager.Instance.InitAsync();                       // UI 管理器
         
         if (isServerEnable)
@@ -41,6 +41,9 @@ public class GameMain : SingletonBehaviour<GameMain>
     {
         if(AssetManager.Instance.isInit)
             AssetManager.Instance.Update();
+
+        if (ScreenAdapterManager.Instance.isInit)
+            ScreenAdapterManager.Instance.Update();
         
         if(UIManager.Instance.isInit)
             UIManager.Instance.Update();

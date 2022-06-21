@@ -7,7 +7,20 @@ namespace Framework.ScreenAdapter
     [DisallowMultipleComponent]
     public class SafeAreaRectTransform : MonoBehaviour
     {
+        private void Awake()
+        {
+            ScreenAdapterManager.Instance.onScreenResolutionChanged.AddListener(_ =>
+            {
+                Refresh();
+            });
+        }
+
         private void OnEnable()
+        {
+            Refresh();
+        }
+
+        private void Refresh()
         {
             RectTransform rtf = GetComponent<RectTransform>();
             if (rtf == null) return;

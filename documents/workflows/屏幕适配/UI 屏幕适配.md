@@ -10,8 +10,7 @@
 
 当前方案会简化手机的安全区模型，将手机区域分为中间的安全区，以及左右两边等宽的 inset 区。inset的宽度会取实际的两边的 inset 中的最大值。而底部浮动条的影响则由UI设计去处理，即保证在设计UI的时候，不会把UI的位置设计得太接近底部。
 
-1. 获取屏幕分辨率 ScreenAdapterManager.Instance.screenSize
-2. 获取 inset 的宽度: ScreenAdapterManager.Instance.safeAreaInsetWidthNormalized
+1. 获取 inset 的宽度: ScreenAdapterManager.Instance.safeAreaInsetWidthNormalized
 
 # UI Prefab 制作
 
@@ -28,7 +27,5 @@
 
 # 编辑器下模拟安全区
 
-默认在编辑器下面是没有安全区的概念的。可以将当前编辑器 GameView 的分辨率设置为某个分辨率，开启安全区模拟。开启安全区模拟之后，游戏会加载几张图用来模拟IPhone的圆角，刘海和底部浮动条。同时当前的 inset 区也会有宽度。
-
-具体开启安全模拟器的分辨率以及对应的 inset 区的宽度参考 IPhoneSimulator.cs
+使用Unity Simulator 面板。
 

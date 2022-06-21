@@ -9,7 +9,20 @@ namespace Framework.ScreenAdapter
     [DisallowMultipleComponent]
     public class AntiSafeAreaRectTransform : MonoBehaviour
     {
+        private void Awake()
+        {
+            ScreenAdapterManager.Instance.onScreenResolutionChanged.AddListener(_ =>
+            {
+                Refresh();
+            });
+        }
+
         private void OnEnable()
+        {
+            Refresh();
+        }
+
+        private void Refresh()
         {
             RectTransform rc = GetComponent<RectTransform>();
             rc.anchorMin = ScreenAdapterManager.Instance.antiSafeAreaRect.min;
