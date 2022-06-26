@@ -96,16 +96,19 @@ public class AssetManager : SingleTon<AssetManager>
         assetName_loadingAsset = new Dictionary<string, AssetWrap>();
         keysToRemove = new List<string>();
 
-#if !UNITY_EDITOR
-            var assetBundle = AssetBundle.LoadFromFile(assetBundleName_assetBundleFullName[assetName_assetBundleName["AssetBundleManifest"]]);
-            assetBundleManifest = assetBundle.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
-#else
-        if (assetModeInEditor == AssetMode.AssetBundle)
+        if (!Application.isEditor)
         {
             var assetBundle = AssetBundle.LoadFromFile(assetBundleName_assetBundleFullName[assetName_assetBundleName["AssetBundleManifest"]]);
             assetBundleManifest = assetBundle.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
         }
-#endif
+        else
+        {
+            if (assetModeInEditor == AssetMode.AssetBundle)
+            {
+                var assetBundle = AssetBundle.LoadFromFile(assetBundleName_assetBundleFullName[assetName_assetBundleName["AssetBundleManifest"]]);
+                assetBundleManifest = assetBundle.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
+            }
+        }
         isInit = true;
         onInit?.Invoke();
     }
@@ -114,13 +117,11 @@ public class AssetManager : SingleTon<AssetManager>
 
     public T LoadAsset<T>(string assetName, Object objRef) where T : Object
     {
-#if UNITY_EDITOR
-        if (assetModeInEditor == AssetMode.AssetDataBase)
+        if (Application.isEditor && assetModeInEditor == AssetMode.AssetDataBase)
         {
             var fullName = assetName_assetFullName[assetName];
             return AssetDatabase.LoadAssetAtPath<T>(fullName);
         }
-#endif
 
         if (!assetName_assetBundleName.TryGetValue(assetName, out var assetBundleName) || !assetName_assetFullName.TryGetValue(assetName, out var assetFullName))
         {
@@ -150,13 +151,11 @@ public class AssetManager : SingleTon<AssetManager>
 
     public AssetWrap LoadAssetAsync<T>(string assetName, Object objRef, Action<T> onLoaded) where T : Object
     {
-#if UNITY_EDITOR
-        if (assetModeInEditor == AssetMode.AssetDataBase)
+        if (Application.isEditor && assetModeInEditor == AssetMode.AssetDataBase)
         {
             onLoaded(LoadAsset<T>(assetName, objRef));
             return null;
         }
-#endif
 
         if (!assetName_assetBundleName.TryGetValue(assetName, out var assetBundleName) || !assetName_assetFullName.TryGetValue(assetName, out var assetFullName))
         {
@@ -271,7 +270,7 @@ public class AssetManager : SingleTon<AssetManager>
     // 调试用，输出已经加载了AssetBundle信息，Json形式
     public string GetLoadedAssetBundlesInfo()
     {
-        List<AssetBundleWrapInfo> infos = new List<AssetBundleWrapInfo>();
+        List<AssetBundleWrapInfo> infos = new();
         foreach (var keyValuePair in assetBundleName_loadedAssetBundle)
         {
             var wrap = keyValuePair.Value;
@@ -325,18 +324,22 @@ public class AssetManager : SingleTon<AssetManager>
         assetName_assetBundleName = new Dictionary<string, string>();
         assetBundleName_assetBundleFullName = new Dictionary<string, string>();
         assetBundleName_resident = new Dictionary<string, bool>();
-#if UNITY_EDITOR
-        if (assetModeInEditor == AssetMode.AssetBundle)
+
+        if (Application.isEditor)
         {
-            await InitAssetNameMapInAssetBundleModeAsync();
+            if (assetModeInEditor == AssetMode.AssetBundle)
+            {
+                await InitAssetNameMapInAssetBundleModeAsync();
+            }
+            else
+            {
+                InitAssetNameMapInAssetDataBaseMode();
+            }
         }
         else
         {
-            InitAssetNameMapInAssetDataBaseMode();
+            await InitAssetNameMapInAssetBundleModeAsync();
         }
-#else
-		InitAssetNameMapInAssetBundleModeAsync();
-#endif
 
         GameLogger.Log($"assetName_assetFullName = {JsonConvert.SerializeObject(assetName_assetFullName, Formatting.Indented)}");
         GameLogger.Log($"assetName_assetBundleFullName = {JsonConvert.SerializeObject(assetName_assetBundleName, Formatting.Indented)}");
