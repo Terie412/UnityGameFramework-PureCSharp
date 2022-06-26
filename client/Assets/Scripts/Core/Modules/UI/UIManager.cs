@@ -75,20 +75,20 @@ namespace Modules.UI
             {
                 if (parent.sysType != E_WINDOW_TYPE.Main)
                 {
-                    GameLogger.Error($"不支持将生命周期绑定到其他类型的窗口上");
+                    GameLogger.LogError($"不支持将生命周期绑定到其他类型的窗口上");
                     return;
                 }
 
                 if (!mainUIStack.TryPeek(out var peekWnd) || peekWnd != parent)
                 {
-                    GameLogger.Error($"窗口栈顶上下文丢失");
+                    GameLogger.LogError($"窗口栈顶上下文丢失");
                     return;
                 }
 
                 hasParent = true;
             }
 
-            GameLogger.Info($"Try to open window: {wndName}");
+            GameLogger.Log($"Try to open window: {wndName}");
             var request = new LoadRequest {state = E_LOAD_STATE.loading, parent = parent, args = args};
             AssetManager.Instance.LoadAndInstantiateGameObjectAsync(wndName, MainUICanvas.transform, gos =>
             {
@@ -131,7 +131,7 @@ namespace Modules.UI
                 || (window.sysType == E_WINDOW_TYPE.Upper && upperUIStack.Count == 0)
                 || (window.sysType == E_WINDOW_TYPE.System && systemUIStack.Count == 0))
             {
-                GameLogger.Error($"尝试关闭窗口：{window.name}，但是窗口堆栈为空");
+                GameLogger.LogError($"尝试关闭窗口：{window.name}，但是窗口堆栈为空");
                 return;
             }
 
@@ -148,7 +148,7 @@ namespace Modules.UI
                 count++;
                 if (count > 100)
                 {
-                    GameLogger.Error("死循环");
+                    GameLogger.LogError("死循环");
                     return;
                 }
 
@@ -266,7 +266,7 @@ namespace Modules.UI
                         var ret = RegisterWindow(target);
                         if (!ret)
                         {
-                            GameLogger.Error($"窗口入栈失败: {target.name}");
+                            GameLogger.LogError($"窗口入栈失败: {target.name}");
                             Object.Destroy(target.gameObject);
                         }
                         else
@@ -289,7 +289,7 @@ namespace Modules.UI
                     upperUIStack.Push(window);
                     return true;
                 case E_WINDOW_TYPE.System when systemUIStack.Count >= 1:
-                    GameLogger.Error($"默认只能存在一个系统级弹窗"); // 这里的做法有待商榷，可能把栈内的窗口都销毁，保留新的系统弹窗更合理
+                    GameLogger.LogError($"默认只能存在一个系统级弹窗"); // 这里的做法有待商榷，可能把栈内的窗口都销毁，保留新的系统弹窗更合理
                     return false;
                 case E_WINDOW_TYPE.System:
                     systemUIStack.Push(window);

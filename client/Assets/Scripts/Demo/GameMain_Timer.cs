@@ -18,10 +18,10 @@ public class GameMain_Timer : MonoBehaviour
         var timer = new UnityTimer(5, () =>
         {
             var endTime = Time.unscaledTime;
-            GameLogger.Info($"经历了 {endTime - startTime} s");
+            GameLogger.Log($"经历了 {endTime - startTime} s");
         }, t =>
         {
-            GameLogger.Info($"更新 t = {t}");
+            GameLogger.Log($"更新 t = {t}");
         });
 		
         timer.Start();

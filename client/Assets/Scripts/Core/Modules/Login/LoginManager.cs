@@ -25,7 +25,7 @@ namespace Modules.Login
             var ack = msg as LoginAck;
             TimeUtils.LoginTimeServer = ack.LoginTime;
             TimeUtils.LoginRealTimeSinceStartUp = Time.realtimeSinceStartup;
-            GameLogger.Info($"登录成功 {JsonConvert.SerializeObject(ack)}, 登录时间为：UTC{TimeUtils.MilliTimeStampToDateTime(TimeUtils.LoginTimeServer)}, 协议延迟:{(TimeUtils.LoginRealTimeSinceStartUp - loginReqSendTime) * 1000} ms");
+            GameLogger.Log($"登录成功 {JsonConvert.SerializeObject(ack)}, 登录时间为：UTC{TimeUtils.MilliTimeStampToDateTime(TimeUtils.LoginTimeServer)}, 协议延迟:{(TimeUtils.LoginRealTimeSinceStartUp - loginReqSendTime) * 1000} ms");
         }
     }
 }

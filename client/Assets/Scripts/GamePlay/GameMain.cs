@@ -1,3 +1,4 @@
+using System;
 using Framework.ScreenAdapter;
 using Modules.UI;
 using UnityEngine;
@@ -29,7 +30,7 @@ public class GameMain : SingletonBehaviour<GameMain>
             var ret = await NetClient.Instance.TryConnectToServer();    // 连接到服务器
             if (!ret)
             {
-                GameLogger.Error("连接服务器失败");
+                GameLogger.LogError("连接服务器失败");
                 return;
             }
         }
@@ -47,6 +48,15 @@ public class GameMain : SingletonBehaviour<GameMain>
         
         if(UIManager.Instance.isInit)
             UIManager.Instance.Update();
+        
+        if(GameLogger.Instance.isInit)
+            GameLogger.Instance.Update();
+    }
+
+    private void OnApplicationQuit()
+    {
+        if (GameLogger.Instance.isInit)
+            GameLogger.Instance.OnApplicationQuit();
     }
 
     private void Main()

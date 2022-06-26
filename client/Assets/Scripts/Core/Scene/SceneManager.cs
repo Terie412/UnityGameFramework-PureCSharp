@@ -27,13 +27,13 @@ public class SceneManager : SingleTon<SceneManager>
     {
         if (curSceneType != null)
         {
-            GameLogger.Error("【场景切换】切换场景失败：当前正在切换场景");
+            GameLogger.LogError("【场景切换】切换场景失败：当前正在切换场景");
             return;
         }
 
         if (!param.ignoreSameSceneCheck && curSceneType != null && curSceneType == sceneType)
         {
-            GameLogger.Info($"【场景切换】切换场景失败：已经处于目标场景: {sceneType.name}");
+            GameLogger.Log($"【场景切换】切换场景失败：已经处于目标场景: {sceneType.name}");
             return;
         }
 
@@ -46,7 +46,7 @@ public class SceneManager : SingleTon<SceneManager>
         curSceneType = null;
         mainCamera = null;
         
-        GameLogger.Info($"【场景切换】场景类初始化");
+        GameLogger.Log($"【场景切换】场景类初始化");
         curSceneType.Init(param.sceneParams);
 
         await OpenAndWaitForSecondStage(param.loadingEffectName == null ? sceneType.loadingEffectName : param.loadingEffectName);

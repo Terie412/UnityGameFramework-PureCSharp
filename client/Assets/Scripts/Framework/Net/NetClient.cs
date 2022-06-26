@@ -6,7 +6,6 @@ using KCPNet;
 using GameProtocol;
 using Google.Protobuf;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 // 这个网络模块只是随便写写，一个基于KCP的简易通信模块
 public class NetClient: SingleTon<NetClient>
@@ -78,9 +77,6 @@ public class NetClient: SingleTon<NetClient>
 
     private void OnKCPReceive(byte[] bytesReceived)
     {
-        lock (receiveQueue)
-        {
-            receiveQueue.Enqueue(bytesReceived);
-        }
+        receiveQueue.Enqueue(bytesReceived);
     }
 }

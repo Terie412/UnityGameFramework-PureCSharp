@@ -83,7 +83,7 @@ public class AssetManager : SingleTon<AssetManager>
     {
         if (isInit)
         {
-            GameLogger.Error($"Do not init AssetManager twice!");
+            GameLogger.LogError($"Do not init AssetManager twice!");
             return;
         }
         
@@ -124,14 +124,14 @@ public class AssetManager : SingleTon<AssetManager>
 
         if (!assetName_assetBundleName.TryGetValue(assetName, out var assetBundleName) || !assetName_assetFullName.TryGetValue(assetName, out var assetFullName))
         {
-            GameLogger.Error($"Failed to find asset, assetName = {assetName}");
+            GameLogger.LogError($"Failed to find asset, assetName = {assetName}");
             return null;
         }
 
         // 不能同步加载一个正在异步加载的资源
         if (assetName_loadingAsset.TryGetValue(assetName, out var assetWrap))
         {
-            GameLogger.Error($"You are trying to load an asset synchronously while it has been loaded in asynchronous way");
+            GameLogger.LogError($"You are trying to load an asset synchronously while it has been loaded in asynchronous way");
             return null;
         }
 
@@ -160,7 +160,7 @@ public class AssetManager : SingleTon<AssetManager>
 
         if (!assetName_assetBundleName.TryGetValue(assetName, out var assetBundleName) || !assetName_assetFullName.TryGetValue(assetName, out var assetFullName))
         {
-            Debug.LogError($"Failed to find asset, assetName = {assetName}");
+            GameLogger.LogError($"Failed to find asset, assetName = {assetName}");
             return null;
         }
 
@@ -172,7 +172,7 @@ public class AssetManager : SingleTon<AssetManager>
                 var asset = obj as T;
                 if (asset == null)
                 {
-                    Debug.LogError($"Fail to convert asset({asset.name}) to type({typeof(T).Name})");
+                    GameLogger.LogError($"Fail to convert asset({asset.name}) to type({typeof(T).Name})");
                     return;
                 }
 
@@ -338,8 +338,8 @@ public class AssetManager : SingleTon<AssetManager>
 		InitAssetNameMapInAssetBundleModeAsync();
 #endif
 
-        Debug.Log($"assetName_assetFullName = {JsonConvert.SerializeObject(assetName_assetFullName, Formatting.Indented)}");
-        Debug.Log($"assetName_assetBundleFullName = {JsonConvert.SerializeObject(assetName_assetBundleName, Formatting.Indented)}");
+        GameLogger.Log($"assetName_assetFullName = {JsonConvert.SerializeObject(assetName_assetFullName, Formatting.Indented)}");
+        GameLogger.Log($"assetName_assetBundleFullName = {JsonConvert.SerializeObject(assetName_assetBundleName, Formatting.Indented)}");
     }
 
     private async Task InitAssetNameMapInAssetBundleModeAsync()
@@ -413,7 +413,7 @@ public class AssetManager : SingleTon<AssetManager>
     {
         if (!assetBundleName_assetBundleFullName.TryGetValue(assetBundleName, out var assetBundleFullName))
         {
-            Debug.LogError($"Fail to find assetBundle, assetBundleName ={assetBundleName}");
+            GameLogger.LogError($"Fail to find assetBundle, assetBundleName ={assetBundleName}");
             return null;
         }
 
@@ -424,7 +424,7 @@ public class AssetManager : SingleTon<AssetManager>
 
         if (assetBundleName_loadingAssetBundle.TryGetValue(assetBundleName, out var assetBundleWrap2))
         {
-            GameLogger.Error("Never try to load an asset synchronously while its assetbundle is loading asynchronously");
+            GameLogger.LogError("Never try to load an asset synchronously while its assetbundle is loading asynchronously");
             return null;
         }
 
@@ -451,7 +451,7 @@ public class AssetManager : SingleTon<AssetManager>
     {
         if (!assetBundleName_assetBundleFullName.TryGetValue(assetBundleName, out var assetBundleFullName))
         {
-            Debug.LogError($"Fail to find assetBundle, assetBundleName ={assetBundleName}");
+            GameLogger.LogError($"Fail to find assetBundle, assetBundleName ={assetBundleName}");
             return null;
         }
 
@@ -545,11 +545,11 @@ public class AssetManager : SingleTon<AssetManager>
         {
             if (wrap.request.assetBundle == null)
             {
-                GameLogger.Error($"加载AssetBundle失败: {wrap.assetBundleFullName}");
+                GameLogger.LogError($"加载AssetBundle失败: {wrap.assetBundleFullName}");
                 return;
             }
 
-            Debug.Log($"完成加载AB:{wrap.request.assetBundle.name}");
+            GameLogger.Log($"完成加载AB:{wrap.request.assetBundle.name}");
             wrap.onLoaded?.Invoke(wrap);
             assetBundleName_loadedAssetBundle[wrap.assetBundleName] = wrap;
         }
@@ -558,7 +558,7 @@ public class AssetManager : SingleTon<AssetManager>
             wrap.Load();
             if (wrap.isDone)
             {
-                Debug.Log($"完成加载AB:{wrap.request.assetBundle.name}");
+                GameLogger.Log($"完成加载AB:{wrap.request.assetBundle.name}");
                 wrap.onLoaded?.Invoke(wrap);
                 assetBundleName_loadedAssetBundle[wrap.assetBundleName] = wrap;
             }

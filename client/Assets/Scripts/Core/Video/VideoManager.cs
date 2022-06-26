@@ -12,7 +12,7 @@ public class VideoManager : SingleTon<VideoManager>
     {
         if (displayGo == null)
         {
-            GameLogger.Error("Display GameObject can not be null!");
+            GameLogger.LogError("Display GameObject can not be null!");
             return;
         }
 
