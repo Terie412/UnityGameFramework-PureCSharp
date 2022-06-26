@@ -1,15 +1,10 @@
 {
-    "name": "Core.Editor",
+    "name": "Core.Scripts.Framework",
     "rootNamespace": "",
-    "references": [
-        "GUID:3cd1c2fd5134fe944a4d6a6d51fde5f9",
-        "GUID:3d0b5994c8e5e3046b9d8c73ece386e5"
-    ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "references": [],
+    "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": true,
+    "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,

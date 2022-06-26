@@ -1,21 +1,22 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 public class Test: MonoBehaviour
 {
-    public GameObject go;
-    public int totalCount;
+    public GameObject cube;
+    public GameObject sphere;
+    public GameObject capsule;
+
+    private void Start()
+    {
+        Application.targetFrameRate = 30;
+    }
+
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            var ls = go.GetComponent<LoopScrollRectBase>();
-            ls.totalCount = totalCount;
-            ls.onItemBuild.AddListener((obj, index) =>
-            {
-                obj.transform.GetChild(0).GetComponent<Text>().text = index.ToString();
-            });
-            ls.RefillCells();
-        }
+        var v1 = sphere.transform.position - cube.transform.position;
+        var v2 = capsule.transform.position - cube.transform.position;
+
+        var v = Vector3.Cross(v1, v2);
+        Debug.Log($"{v.y}");
     }
 }

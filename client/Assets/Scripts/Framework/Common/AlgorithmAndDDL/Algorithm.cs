@@ -2,7 +2,7 @@
 
 public static class Algorithm
 {
-    private static Random random = new Random(DateTime.Now.Millisecond);
+    private static Random random = new(DateTime.Now.Millisecond);
 
     /// Pick K integers at random from [1, N] with medium probability
     public static int[] NChooseK(int N, int K)

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-public class AssetHelper
+public static class AssetHelper
 {
     // 将目录路径转化成AssetBundle名称，规则是从第一个Assets目录开始（不包含）
     public static string DirectoryPathToAssetBundleName(string dirPath)

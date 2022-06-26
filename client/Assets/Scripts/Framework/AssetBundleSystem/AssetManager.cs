@@ -32,20 +32,14 @@ public class AssetManager : SingleTon<AssetManager>
 {
     #region 属性
 
-    public List<string> assetDirs = new List<string> // 定义哪些目录的资产将会被打成AssetBundle作为合法的资产加载目录
+    public readonly List<string> assetDirs = new() // 定义哪些目录的资产将会被打成AssetBundle作为合法的资产加载目录
     {
         "Assets/Content/Environment",
         "Assets/Content/Shaders",
         "Assets/Content/UI",
     };
-
-    public List<string> singleAssetDirs = new List<string> // 这里定义的目录下的所有文件，都会相应地单独打成一个包
-    {
-    };
-
-    public List<string> residentAssetDirs = new List<string> // 定义哪些目录下的资产将会常驻内存，不会被卸载掉
-    {
-    };
+    public readonly List<string> singleAssetDirs = new(); // 这里定义的目录下的所有文件，都会相应地单独打成一个包
+    public readonly List<string> residentAssetDirs = new(); // 定义哪些目录下的资产将会常驻内存，不会被卸载掉
 
     private string m_ASSETBUNDLE_DIR;
 

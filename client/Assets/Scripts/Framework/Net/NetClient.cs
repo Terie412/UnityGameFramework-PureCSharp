@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 using KCPNet;
@@ -12,7 +12,7 @@ using Object = UnityEngine.Object;
 public class NetClient: SingleTon<NetClient>
 {
     public KCPClient kcpClient;
-    private Queue<byte[]> receiveQueue;
+    private ConcurrentQueue<byte[]> receiveQueue;
     private CancellationTokenSource connectCheckCTS;
 
     public enum NetClientState
@@ -32,17 +32,10 @@ public class NetClient: SingleTon<NetClient>
         KCPNetLogger.onWarning = (str, _) => { Debug.LogWarning(str); };
         KCPNetLogger.onError = (str, _) => { Debug.LogError(str); };
         
-        NetTicker ticker;
-        if((ticker = Object.FindObjectOfType<NetTicker>()) == null)
-        {
-            ticker = new GameObject().AddComponent<NetTicker>();
-            ticker.gameObject.name = "NetTicker";
-        }
-
-        receiveQueue = new Queue<byte[]>();
-
-        ticker.onUpdate = Update;
-        ticker.onApplicationQuit = () =>
+        receiveQueue = new();
+        
+        NetTicker.Instance.onUpdate = Update;
+        NetTicker.Instance.onApplicationQuit = () =>
         {
             connectCheckCTS?.Cancel();
         };
@@ -50,12 +43,9 @@ public class NetClient: SingleTon<NetClient>
 
     private void Update()
     {
-        lock (receiveQueue)
+        if (receiveQueue.TryDequeue(out var data))
         {
-            if (receiveQueue.Count > 0)
-            {
-                ProtocolDispatcher.Dispatch(receiveQueue.Dequeue());
-            }
+            ProtocolDispatcher.Dispatch(data);
         }
     }
 

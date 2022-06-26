@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class NetTicker : MonoBehaviour
+public class NetTicker : SingletonBehaviour<NetTicker>
 {
     public Action onUpdate;
     public Action onApplicationQuit;

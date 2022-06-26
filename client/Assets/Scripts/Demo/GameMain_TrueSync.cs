@@ -32,16 +32,25 @@ public class GameMain_TrueSync : MonoBehaviour
         // Debug.Log($"double表示：factor={Convert.ToString(factor, 2)}\na = {Convert.ToString(a, 2)}\nb={Convert.ToString(b, 2)}\nc={Convert.ToString((long)c, 2)}\nd={Convert.ToString((int)d, 2)}");
 
         // Debug.Log($"{FP.MaxValue}");
-        int a2 = 00;
-        float a3 = 2147483647;
-        Debug.Log($"{a3:F}");
-        
-        FP a = 2147483647;
-        text.text = $"a = {a}"; // 无论是在32bit和64bit的机器上（分别打32bit包和64bit的包），结果都是2147484000和-2147484000
+        // int a2 = 00;
+        // float a3 = 2147483647;
+        // Debug.Log($"{a3:F}");
+        //
+        // FP a = 2147483647;
+        // text.text = $"a = {a}"; // 无论是在32bit和64bit的机器上（分别打32bit包和64bit的包），结果都是2147484000和-2147484000
         
         // a = 2147483646; //4294967296;
         // b = 2147483649; //4294967296;
         // text.text = $"a = {a}, b = {b}"; // 无论是在32bit和64bit的机器上（分别打32bit包和64bit的包），结果都是2147484000和-2147484000
+
+        // long max = 1L << 30;
+        // FP a = max;
+        // long b = (long)a;
+        // Debug.Log($"max = {max}, a = {a}, b = {b}, FP.max = {FP.MaxValue}");;
+        
+        long a = long.MaxValue;
+        float b = a;
+        Debug.Log($"a = {a}, b = {b}, offset = {a - b}, {float.MaxValue - long.MaxValue}");
     }
     
     private void TestMultiplePerformance()
