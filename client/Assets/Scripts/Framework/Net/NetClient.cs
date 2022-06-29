@@ -31,16 +31,15 @@ public class NetClient: SingleTon<NetClient>
         KCPNetLogger.onWarning = (str, _) => { Debug.LogWarning(str); };
         KCPNetLogger.onError = (str, _) => { Debug.LogError(str); };
         
-        receiveQueue = new();
-        
-        NetTicker.Instance.onUpdate = Update;
-        NetTicker.Instance.onApplicationQuit = () =>
-        {
-            connectCheckCTS?.Cancel();
-        };
+        receiveQueue = new ConcurrentQueue<byte[]>();
     }
 
-    private void Update()
+    public void OnApplicationQuit()
+    {
+        connectCheckCTS?.Cancel();
+    }
+
+    public void Update()
     {
         if (receiveQueue.TryDequeue(out var data))
         {

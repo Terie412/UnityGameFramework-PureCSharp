@@ -26,7 +26,6 @@ public class GameMain : SingletonBehaviour<GameMain>
         
         if (isServerEnable)
         {
-            gameObject.GetOrAddComponent<NetTicker>();                  // 网络系统的初始化
             var ret = await NetClient.Instance.TryConnectToServer();    // 连接到服务器
             if (!ret)
             {
@@ -51,12 +50,16 @@ public class GameMain : SingletonBehaviour<GameMain>
         
         if(GameLogger.Instance.isInit)
             GameLogger.Instance.Update();
+        
+        NetClient.Instance.Update();
     }
 
     private void OnApplicationQuit()
     {
         if (GameLogger.Instance.isInit)
             GameLogger.Instance.OnApplicationQuit();
+        
+        NetClient.Instance.OnApplicationQuit();
     }
 
     private void Main()
