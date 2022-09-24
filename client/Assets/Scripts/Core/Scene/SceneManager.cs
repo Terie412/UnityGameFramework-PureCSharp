@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Modules.UI;
+using Core;
+using Framework;
 using UnityEngine;
 
 public class SceneManager : SingleTon<SceneManager>

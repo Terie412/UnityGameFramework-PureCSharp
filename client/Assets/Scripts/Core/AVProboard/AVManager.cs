@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using Core;
+using Framework;
 using RenderHeads.Media.AVProVideo;
 using UnityEngine;
 
@@ -7,12 +9,13 @@ using UnityEngine;
 public class AVManager : SingleTon<AVManager>
 {
     public const string videoPath = "Content/Videos";
+
     public DisplayUGUI displayUGUI;
 
-    public MediaPlayer mediaPlayer => displayUGUI == null ? null : displayUGUI.CurrentMediaPlayer;
-    public IMediaControl control => mediaPlayer == null ? null : mediaPlayer.Control;
-    public IMediaInfo mediaInfo => mediaPlayer == null ? null : mediaPlayer.Info;
-    public IMediaSubtitles subtitles => mediaPlayer == null ? null : mediaPlayer.Subtitles;
+    public MediaPlayer     mediaPlayer => displayUGUI == null ? null : displayUGUI.CurrentMediaPlayer;
+    public IMediaControl   control     => mediaPlayer == null ? null : mediaPlayer.Control;
+    public IMediaInfo      mediaInfo   => mediaPlayer == null ? null : mediaPlayer.Info;
+    public IMediaSubtitles subtitles   => mediaPlayer == null ? null : mediaPlayer.Subtitles;
 
     public Action onMetaDataReady;
     public Action onReadyToPlay;
@@ -59,7 +62,7 @@ public class AVManager : SingleTon<AVManager>
         Reset();
 
         // 初始化组件
-        displayUGUI = displayUGUIGO.GetOrAddComponent<DisplayUGUI>();
+        displayUGUI                    = displayUGUIGO.GetOrAddComponent<DisplayUGUI>();
         displayUGUI.CurrentMediaPlayer = displayUGUIGO.GetOrAddComponent<MediaPlayer>();
 
         // 加载视频
@@ -80,8 +83,8 @@ public class AVManager : SingleTon<AVManager>
         var ticker = displayUGUIGO.GetOrAddComponent<AVTicker>();
         ticker.Init(mediaPlayer);
         ticker.onTimeInMilliSecondUpdate = OnTimeInMilliSecondUpdate;
-        this.onFinishedPlaying = onFinishedPlaying;
-        this.onSubtitleChange = onSubtitleChange;
+        this.onFinishedPlaying           = onFinishedPlaying;
+        this.onSubtitleChange            = onSubtitleChange;
         InitDefaultEvent();
         mediaPlayer.Events.AddListener(OnMediaPlayerEvent);
     }
@@ -305,24 +308,24 @@ public class AVManager : SingleTon<AVManager>
             mediaPlayer.Events.RemoveAllListeners();
         }
 
-        displayUGUI = null;
-        onReadyToPlay = null;
-        onStarted = null;
-        onFirstFrameReady = null;
-        onFinishedPlaying = null;
-        onClosing = null;
-        onError = null;
-        onSubtitleChange = null;
-        onStalled = null;
-        onUnstalled = null;
-        onResolutionChanged = null;
-        onStartedSeeking = null;
-        onFinishedSeeking = null;
-        onStartedBuffering = null;
-        onFinishedBuffering = null;
-        onPropertiesChanged = null;
+        displayUGUI           = null;
+        onReadyToPlay         = null;
+        onStarted             = null;
+        onFirstFrameReady     = null;
+        onFinishedPlaying     = null;
+        onClosing             = null;
+        onError               = null;
+        onSubtitleChange      = null;
+        onStalled             = null;
+        onUnstalled           = null;
+        onResolutionChanged   = null;
+        onStartedSeeking      = null;
+        onFinishedSeeking     = null;
+        onStartedBuffering    = null;
+        onFinishedBuffering   = null;
+        onPropertiesChanged   = null;
         onPlaylistItemChanged = null;
-        onPlaylistFinished = null;
+        onPlaylistFinished    = null;
     }
 
     #endregion

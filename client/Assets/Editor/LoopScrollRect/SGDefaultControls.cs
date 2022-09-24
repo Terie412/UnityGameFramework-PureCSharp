@@ -1,4 +1,4 @@
-﻿using Modules.UI;
+﻿using Core;
 
 namespace UnityEngine.UI
 {

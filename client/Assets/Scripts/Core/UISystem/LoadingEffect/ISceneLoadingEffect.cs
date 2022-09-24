@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Modules.UI
+namespace Core
 {
     public interface ISceneLoadingEffect
     {

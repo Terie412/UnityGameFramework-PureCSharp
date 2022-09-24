@@ -1,18 +1,21 @@
 using System;
 using UnityEngine;
 
-public class SingletonBehaviour<T>: MonoBehaviour where T: SingletonBehaviour<T>
+namespace Framework
 {
-	private static readonly Lazy<T> lazy = new(() =>
+	public class SingletonBehaviour<T> : MonoBehaviour where T : SingletonBehaviour<T>
 	{
-		var instance = FindObjectOfType<T>();
-		if (instance != null) 
+		private static readonly Lazy<T> lazy = new(() =>
+		{
+			var instance = FindObjectOfType<T>();
+			if (instance != null)
+				return instance;
+
+			instance = new GameObject().AddComponent<T>();
+			instance.name = instance.GetType().Name;
 			return instance;
-		
-		instance = new GameObject().AddComponent<T>();
-		instance.name = instance.GetType().Name;
-		return instance;
-	});
-	
-	public static T Instance => lazy.Value;
+		});
+
+		public static T Instance => lazy.Value;
+	}
 }

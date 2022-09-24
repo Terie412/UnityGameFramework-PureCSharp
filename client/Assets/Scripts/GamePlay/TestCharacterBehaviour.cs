@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class TestCharacterBehaviour : MonoBehaviour
+namespace GamePlay
+{
+    public class TestCharacterBehaviour : MonoBehaviour
 {
     public Vector2 velocity; // 速度
     public float radius;
@@ -208,4 +210,5 @@ public class TestCharacterBehaviour : MonoBehaviour
             
         }
     }
+}
 }

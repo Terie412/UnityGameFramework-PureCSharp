@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using Framework;
+using UnityEngine;
 
-namespace Framework.ScreenAdapter
+namespace Core
 {
     internal class AndroidScreenSupport : SingleTon<AndroidScreenSupport>
     {

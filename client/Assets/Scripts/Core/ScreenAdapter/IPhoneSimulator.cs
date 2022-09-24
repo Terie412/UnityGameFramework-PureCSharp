@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
+using Framework;
 
-namespace Framework.ScreenAdapter
+namespace Core
 {
     internal class IPhoneSimulator: SingleTon<IPhoneSimulator>
     {

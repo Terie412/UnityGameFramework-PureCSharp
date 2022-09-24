@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Framework.ScreenAdapter
+namespace Core
 {
     /// 将这个脚本挂载在某个RectTransform下面。它会修改当前 RectTransform 的锚点，使之成为不包含的安全区的全屏UI
     [RequireComponent(typeof(RectTransform))]

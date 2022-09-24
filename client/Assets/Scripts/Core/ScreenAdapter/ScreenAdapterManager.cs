@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using Framework;
+using UnityEngine;
 using UnityEngine.Events;
 
-namespace Framework.ScreenAdapter
+namespace Core
 {
     public class ScreenAdapterManager : SingleTon<ScreenAdapterManager>
     {

@@ -1,63 +1,63 @@
 ﻿using System;
-using System.Threading.Tasks;
-using Framework.ScreenAdapter;
 using UnityEngine;
-using UnityEngine.Networking;
 
-public static class Extensions
+namespace Core
 {
-    public static T GetOrAddComponent<T>(this GameObject go) where T: Behaviour
+    public static class Extensions
     {
-        if (go == null)
+        public static T GetOrAddComponent<T>(this GameObject go) where T : Behaviour
         {
-            return null;
+            if (go == null)
+            {
+                return null;
+            }
+
+            var comp = go.GetComponent<T>();
+            if (comp == null)
+            {
+                return go.AddComponent<T>();
+            }
+
+            return comp;
         }
 
-        var comp = go.GetComponent<T>();
-        if (comp == null)
+        public static Component GetOrAddComponent(this GameObject go, Type t)
         {
-            return go.AddComponent<T>();
+            if (go == null)
+            {
+                return null;
+            }
+
+            var comp = go.GetComponent(t);
+            if (comp == null)
+            {
+                return go.AddComponent(t);
+            }
+
+            return comp;
         }
 
-        return comp;
-    }
-    
-    public static Component GetOrAddComponent(this GameObject go, Type t)
-    {
-        if (go == null)
+        public static Component GetOrAddComponent(this Component comp, Type t)
         {
-            return null;
+            return comp == null ? null : comp.gameObject.GetOrAddComponent(t);
         }
 
-        var comp = go.GetComponent(t);
-        if (comp == null)
+        public static T GetOrAddComponent<T>(this Component comp) where T : Behaviour
         {
-            return go.AddComponent(t);
+            return comp == null ? null : comp.gameObject.GetOrAddComponent<T>();
         }
 
-        return comp;
-    }
-    
-    public static Component GetOrAddComponent(this Component comp, Type t)
-    {
-        return comp == null ? null : comp.gameObject.GetOrAddComponent(t);
-    }
-    
-    public static T GetOrAddComponent<T>(this Component comp) where T: Behaviour
-    {
-        return comp == null ? null : comp.gameObject.GetOrAddComponent<T>();
-    }
+        public static void SetAdaptedFOV(this Camera camera, float fov)
+        {
+            var referenceAspectRatio = ScreenAdapterManager.Instance.referenceAspectRatio;
+            var curAspectRatio = ScreenAdapterManager.Instance.aspectRatio;
+            var needAdapt = Mathf.Abs(curAspectRatio - referenceAspectRatio) > 0.001f;
+            if (!needAdapt) camera.fieldOfView = fov;
 
-    public static void SetAdaptedFOV(this Camera camera, float fov)
-    {
-        var referenceAspectRatio = ScreenAdapterManager.Instance.referenceAspectRatio;
-        var curAspectRatio = ScreenAdapterManager.Instance.aspectRatio;
-        var needAdapt = Mathf.Abs(curAspectRatio - referenceAspectRatio) > 0.001f;
-        if (!needAdapt) camera.fieldOfView = fov;
-            
-        var fovFactor = referenceAspectRatio / curAspectRatio;
-        var tan = Mathf.Tan(fov / 2f * Mathf.Deg2Rad) * fovFactor;
-        var newFov = Mathf.Atan(tan) * 2f * Mathf.Rad2Deg;
-        camera.fieldOfView = newFov;
+            var fovFactor = referenceAspectRatio / curAspectRatio;
+            var tan = Mathf.Tan(fov / 2f * Mathf.Deg2Rad) * fovFactor;
+            var newFov = Mathf.Atan(tan) * 2f * Mathf.Rad2Deg;
+            camera.fieldOfView = newFov;
+        }
     }
 }

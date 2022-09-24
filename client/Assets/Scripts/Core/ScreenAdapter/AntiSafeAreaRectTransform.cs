@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Framework.ScreenAdapter
+namespace Core
 {
     /// 对于处于父级是 SafeAreaRectTransform 的UI，锚点设置为全屏时，依然是处于安全区之外的
     /// 但是对于一些背景类的UI，它需要扩展到安全区里

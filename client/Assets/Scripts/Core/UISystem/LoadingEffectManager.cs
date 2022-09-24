@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
-using Modules.UI;
+using Framework;
 using UnityEngine;
 
-namespace Modules.UI
+namespace Core
 {
     public class LoadingEffectManager: SingleTon<LoadingEffectManager>
     {

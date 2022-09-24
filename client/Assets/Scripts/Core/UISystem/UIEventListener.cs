@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Modules.UI
+namespace Core
 {
     /// 将IEventSystemHandler的接口都放在一块儿方便在底层收敛管理，算是一种较为常见的做法
     /// 毕竟我们走不到UGUI的底层，对于Button和Toggle类似的点击控件要做处理的话，要分别处理

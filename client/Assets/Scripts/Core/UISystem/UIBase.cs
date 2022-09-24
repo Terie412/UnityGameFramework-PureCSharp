@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Modules.UI
+namespace Core
 {
     public class UIBase: MonoBehaviour
     {

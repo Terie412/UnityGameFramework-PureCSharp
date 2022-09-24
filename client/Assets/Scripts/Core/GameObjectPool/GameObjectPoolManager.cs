@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using Framework;
 
 public class GameObjectPoolManager : SingletonBehaviour<GameObjectPoolManager>
 {

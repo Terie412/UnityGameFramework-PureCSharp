@@ -1,4 +1,5 @@
 ﻿using System;
+using Framework;
 using UnityEngine;
 
 public class SceneBase: SingleTon<SceneBase>

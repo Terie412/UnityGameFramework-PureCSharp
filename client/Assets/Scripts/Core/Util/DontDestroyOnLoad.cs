@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 
-public class DontDestroyOnLoad : MonoBehaviour
+namespace Core
 {
-    private void OnEnable()
+    public class DontDestroyOnLoad : MonoBehaviour
     {
-        if(transform.parent == null)
-            DontDestroyOnLoad(this);
+        private void OnEnable()
+        {
+            if (transform.parent == null)
+                DontDestroyOnLoad(this);
+        }
     }
 }

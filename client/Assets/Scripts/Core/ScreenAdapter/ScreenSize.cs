@@ -1,4 +1,4 @@
-﻿namespace Framework.ScreenAdapter
+﻿namespace Core
 {
     public struct ScreenSize
     {

@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using Core;
+using Framework;
 using UnityEngine;
 
 public class GameMain_Timer : MonoBehaviour
