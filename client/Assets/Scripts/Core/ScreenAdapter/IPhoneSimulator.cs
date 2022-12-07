@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 using Framework;
 
 namespace Core
@@ -8,7 +8,7 @@ namespace Core
         private ScreenSize referenceScreenSize = new(2436, 1125); // 当编辑器的分辨率等于该参考分辨率的时候，则使用IPhone的一些适配数据进行适配模拟
         public readonly float safeAreaInsetWidthNormalized = 132f / 2436f; // 模拟的安全区侧边的大小
 
-        public async Task Init(ScreenSize curScreenSize)
+        public async UniTask Init(ScreenSize curScreenSize)
         {
             if (curScreenSize.Equals(referenceScreenSize))
             {

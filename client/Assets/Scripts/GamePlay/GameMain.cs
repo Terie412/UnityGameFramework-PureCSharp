@@ -32,12 +32,12 @@ public class GameMain : SingletonBehaviour<GameMain>
     {
         frameRate = 30;
 
-        GameLogger.Instance.Init();         // 日志系统初始化
-        await AssetManager.Instance.Init(); // 资产管理器初始化
-        ScreenAdapterManager.Instance.Init(); // 屏幕适配
-        await UIManager.Instance.InitAsync(); // UI 管理器
-        
-        Main();                               // 主逻辑
+        GameLogger.Instance.Init();              // 日志系统初始化
+        await AssetManager.Instance.InitAsync(); // 资产管理器初始化
+        ScreenAdapterManager.Instance.Init();    // 屏幕适配
+        await UIManager.Instance.InitAsync();    // UI 管理器
+
+        Main(); // 主逻辑
     }
 
     private void Update()

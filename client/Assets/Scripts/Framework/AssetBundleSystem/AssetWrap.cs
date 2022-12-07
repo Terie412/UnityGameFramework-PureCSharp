@@ -5,10 +5,10 @@ using Object = UnityEngine.Object;
 
 namespace Framework
 {
-// 仅仅是用来打印信息的
+    // 仅仅是用来打印信息的
     public struct AssetBundleWrapInfo
     {
-        public string assetBundleName;
+        public string       assetBundleName;
         public List<string> deps;
         public List<string> abRefs;
         public List<string> objRefs;
@@ -16,18 +16,23 @@ namespace Framework
 
     public class AssetWrap
     {
-        public readonly string assetName;
-        public readonly string assetFullName;
+        public string assetName { get; }
+        public string assetFullName { get; }
         public Action<Object> onLoaded;
-        public AssetBundleRequest request;
 
-        public bool isDone => request != null && request.isDone;
+        private Object             syncAsset; // 同步加载的结果。和下面的 request 是互斥的
+        private AssetBundleRequest request;   // 异步请求的结果，和上面的 syncAsset 是互斥的
+        public Object loadedAsset => syncAsset != null ? syncAsset : request?.asset;
 
-        public AssetWrap(string assetName, string assetFullName, Action<Object> onLoaded)
+        public bool isDone => syncAsset || (request != null && request.isDone);
+
+        public AssetWrap(string assetName, string assetFullName, AssetBundleRequest request, Object syncAsset, Action<Object> onLoaded)
         {
-            this.assetName = assetName;
+            this.assetName     = assetName;
             this.assetFullName = assetFullName;
-            this.onLoaded = onLoaded;
+            this.onLoaded      = onLoaded;
+            this.request       = request;
+            this.syncAsset     = syncAsset;
         }
     }
 }

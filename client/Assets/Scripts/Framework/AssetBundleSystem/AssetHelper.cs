@@ -9,8 +9,8 @@ namespace Framework
         public static string DirectoryPathToAssetBundleName(string dirPath)
         {
             dirPath = dirPath.ToLower().Replace("\\", "/").TrimStart('/');
-            var dirs = dirPath.Split('/');
-            var sb = new StringBuilder();
+            var dirs        = dirPath.Split('/');
+            var sb          = new StringBuilder();
             var assetsIndex = Int32.MaxValue;
             for (var i = 0; i < dirs.Length; i++)
             {
